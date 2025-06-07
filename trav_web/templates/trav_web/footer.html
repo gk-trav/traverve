@@ -1,0 +1,177 @@
+{% load static %}
+{% load custom_filters %}
+<footer class="container">
+    <div class="d-none d-lg-flex  justify-content-between py-3">
+        <div class="d-flex flex-column flex-lg-row flex-md-row col-12 justify-content-between">
+            <div style="line-height: 2;">
+                <p class="fw_600 m-0">Company</p>
+
+                <a href="{{ request.scheme }}://{{ request.get_host }}/about-us">
+                    About Us
+                </a> <br>
+                <a href="{{ request.scheme }}://{{ request.get_host }}/privacy-policy">
+                    Privacy Policy
+                </a> <br>
+                <a href="{{ request.scheme }}://{{ request.get_host }}/terms-and-conditions">
+                    Terms and Conditions
+                </a>
+
+
+                <div class="d-none d-md-block d-lg-block">
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <a href="/">
+                        <img width="150" height="35" src="{% static 'assets/Logo.png' %}" alt="Logo"
+                            title="Traverve - Logo">
+                    </a>
+                    <p class="fs_14">
+                        Turn your plans to Trips
+                    </p>
+                </div>
+            </div>
+
+
+
+            <div style="line-height: 2;">
+                <p class="fw_600 m-0">Discover</p>
+
+                <a href="{{ request.scheme }}://{{ request.get_host }}/explore">
+                    Explore Destinations
+                </a> <br>
+
+
+            </div>
+            <div class="" style="border-right: 1px solid black;opacity: .25;"></div>
+            <div style="line-height: 2;">
+                <p class="fw_600 m-0">Popular Countries</p>
+                {% for t in footer_data.top_destinations %}
+                <a href="{{ request.scheme }}://{{ request.get_host }}/country/{{t.name | clean_slug}}/{{t.id}}">
+                    {{t.name}}
+                </a> <br>
+                {% endfor %}
+
+            </div>
+            <div style="line-height: 2;">
+                <p class="fw_600 m-0">Popular Cities</p>
+
+                {% for c in footer_data.top_cities %}
+                <a href="{{ request.scheme }}://{{ request.get_host }}/city/{{ c.city_ascii | clean_slug }}/{{c.id}}">
+                    {{ c.city_ascii}}
+                </a> <br>
+                {%endfor%}
+            </div>
+        </div>
+
+
+
+    </div>
+
+    <div class="d-block d-lg-none">
+        <div class="accordion" id="accordionExample">
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header" id="heading0">
+                    <button style="background-color: white;box-shadow: unset;color:black;"
+                        class="accordion-button collapsed px-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse0" aria-expanded="false" aria-controls="collapse0">
+                        Company
+                    </button>
+                </h2>
+                <div id="collapse0" class="accordion-collapse collapse" aria-labelledby="heading0"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body  px-0">
+                        <a href="{{ request.scheme }}://{{ request.get_host }}/about-us">
+                            About Us
+                        </a> <br><br>
+                        <a href="{{ request.scheme }}://{{ request.get_host }}/privacy-policy">
+                            Privacy Policy
+                        </a> <br><br>
+                        <a href="{{ request.scheme }}://{{ request.get_host }}/terms-and-conditions">
+                            Terms and Conditions
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header" id="heading1">
+                    <button style="background-color: white;box-shadow: unset;color:black;"
+                        class="accordion-button collapsed px-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                        Discover
+                    </button>
+                </h2>
+                <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body px-0">
+                        <a href="e{{ request.scheme }}://{{ request.get_host }}/xplore">
+                            Explore Destinations
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header" id="heading2">
+                    <button style="background-color: white;box-shadow: unset;color:black;"
+                        class="accordion-button collapsed px-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                        Popular Countries
+                    </button>
+                </h2>
+                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="heading2"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body px-0">
+                        {% for t in footer_data.top_destinations %}
+                        <a href="{{ request.scheme }}://{{ request.get_host }}/country/{{t.name | clean_slug}}/{{t.id}}">
+                            {{t.name}}
+                        </a> <br><br>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item border-0">
+                <h2 class="accordion-header" id="heading3">
+                    <button style="background-color: white;box-shadow: unset;color:black;"
+                        class="accordion-button collapsed px-0" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                        Popular Cities
+                    </button>
+                </h2>
+                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="heading3"
+                    data-bs-parent="#accordionExample">
+                    <div class="accordion-body px-0">
+                        {% for c in footer_data.top_cities %}
+                        <a href="{{ request.scheme }}://{{ request.get_host }}/city/{{ c.city_ascii | clean_slug }}/{{c.id}}>">
+                            {{ c.city_ascii}}
+                        </a> <br><br>
+                        {%endfor%}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="d-block d-md-none d-lg-none">
+
+        <br>
+        <a href="{{ request.scheme }}://{{ request.get_host }}/">
+            <img width="150" height="35" src="{% static 'assets/Logo.svg' %}" alt="Logo" title="Traverve - Logo">
+        </a>
+        <p class="fs_14">
+            Turn your plans to Trips
+        </p>
+    </div>
+    <hr>
+    <div class="pb-3 text-center d-flex flex-lg-row flex-column justify-content-between">
+
+        <div>
+            All Rights Reserved Copyright © 2025
+        </div>
+        <div>
+            Made with ❤️in INDIA by Traverve
+        </div>
+    </div>
+</footer>

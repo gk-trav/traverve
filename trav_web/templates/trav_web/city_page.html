@@ -1,0 +1,824 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% if seo_data %}
+    <title>{{ seo_data.title }}</title>
+    <meta name="description" content="{{ seo_data.seo_description }}">
+    <meta property="og:title" content="{{ seo_data.og_title }}">
+    <meta property="og:description" content="{{ seo_data.og_description }}">
+    {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:url" content="/">
+    <link rel="canonical" href="/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/avicon-16x16.png' %}">
+
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="classification" content="Traverve - Trip Planner" />
+    <meta property="og:site_name" content="Traverve" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'assets/og_travel_img.jpeg' %}" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Passion+One:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://vjs.zencdn.net/8.12.0/video-js.css" rel="stylesheet" />
+
+    <link href="{% static 'assets/travel-styles.css' %}" rel="stylesheet" />
+
+    {% if faqs_data %}
+    <script type="application/ld+json">
+    {{ faq_schema_json|safe }}
+    </script>
+    {% endif %}
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "{{ request.scheme }}://{{ request.get_host }}/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Explore",
+                "item": "{{ request.scheme }}://{{ request.get_host }}/explore"
+            },
+            {
+                "@type": "ListItem",
+                "position": 3,
+                "name": "Country",
+                "item": "{{ request.scheme }}://{{ request.get_host }}/country/{{data.country | clean_slug}}/{{data.country_id}}"
+            },
+            {
+                "@type": "ListItem",
+                "position": 4,
+                "name": "City - {{ data.city_ascii }}",
+                "item": "{{ request.build_absolute_uri }}"
+            }
+        ]
+    }
+    </script>
+
+    <style>
+        body {
+            font-family: "Figtree", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .figtree {
+            font-family: "Figtree", sans-serif;
+        }
+
+        .passion {
+            font-family: "Passion One";
+        }
+
+        body {
+            background: #FFF9F4;
+        }
+
+        .nav-header {
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            gap: 40px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+
+        .normal-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            font-family: "Passion One";
+        }
+
+        .banner {
+            background: url("<?= base_url() ?>/assets/banner-city.png") repeat;
+            /* background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat;
+            background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat; */
+
+            min-height: 400px;
+
+        }
+
+        .bg-button {
+            border-radius: 40px;
+            font-family: "Passion One";
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            background: var(--Primary-5, #E5855D);
+        }
+
+        .title-heading {
+            color: var(--Gray-24, #0A0A0A);
+            text-align: center;
+            /* font-variant-numeric: lining-nums proportional-nums; */
+            font-family: "Passion One";
+            font-size: 120px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 100px;
+        }
+
+        .fs_60px {
+            font-size: 60px;
+            font-family: "Passion One";
+
+        }
+
+        .banner-overlay {
+            background: url("<?= base_url() ?>/assets/banner-left.png") left no-repeat, url("<?= base_url() ?>/assets/banner-right.png") right no-repeat;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fs_24 {
+            font-size: 24px;
+        }
+
+        .fw_600 {
+            font-weight: 600;
+        }
+
+        .bg_white {
+            background-color: white;
+        }
+
+        .section {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000;
+
+        }
+
+        .section-not-bg {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+
+        }
+
+        .secondary-header {
+            font-size: 44px;
+            font-style: normal;
+            font-weight: 600;
+            /* line-height: 28px; */
+
+        }
+
+        .br_10 {
+            border-radius: 10px;
+        }
+
+        .fs_14 {
+            font-size: 14px;
+        }
+
+        .fs_18 {
+            font-size: 18px;
+        }
+
+        .w_19 {
+            width: 19%;
+        }
+
+        .w_49 {
+            width: 49%;
+        }
+
+        .bg-black {
+            background-color: black;
+        }
+
+        .lineclamp3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .city-button {
+            bottom: 15px;
+            z-index: 111;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            border-radius: 15px;
+            background: black;
+            opacity: 0.7;
+        }
+
+
+        #items-list {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            row-gap: 10px;
+        }
+
+        .grid-reels {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            row-gap: 10px;
+        }
+
+        #searchbox {
+            width: 60%;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            border-radius: 25px;
+            z-index: 1111
+        }
+
+        .tag-us {
+
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            row-gap: 10px;
+        }
+
+
+
+        @media only screen and (max-width: 768px) and (min-width:380px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            .banner-overlay {
+                background-size: 50%;
+                background: url("<?= base_url() ?>/assets/banner-left.png") left 0 no-repeat, url("<?= base_url() ?>/assets/banner-right.png") right no-repeat;
+                display: block;
+            }
+
+            #searchbox {
+                width: unset;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us img {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 376px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            .banner-overlay {
+                background: url("http://localhost/travel//assets/banner-left.png") left no-repeat, url("http://localhost/travel//assets/banner-right.png") right no-repeat;
+                background-size: 50%;
+                display: block;
+            }
+
+            #searchbox {
+                width: unset;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .w_xs_100 {
+                width: 100% !important;
+            }
+
+            .mt-sm-2 {
+                margin-top: 1rem
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="backdrop" onclick="closebox()" class="d-none"
+        style="position: absolute;width:100%;height:100%;z-index:1;background: rgba(0,0,0,.4);">
+
+    </div>
+    <div class="container py-3">
+        {% include "trav_web/header.html" %}
+    </div>
+
+    <div class="container-fluid p-0" style="background-color: #C67B63;">
+        <div class="banner p-lg-5">
+            <div class="container d-flex flex-column flex-lg-row h-100 px-lg-5  bg-white" style="padding-top: 2rem;padding-bottom:2rem;
+            background-image: url('http://localhost/travel/assets/city-bg.png'); background-repeat: no-repeat;">
+                <div class="col-lg-6 d-flex flex-column justify-content-center px-2">
+                    <div class="fs_14 m-0">
+
+                        <a class="text-decoration-none" href="/">Home</a> / <a class="text-decoration-none"
+                            href="explore">Explore</a> / <a class="text-decoration-none"
+                            href="country/{{data.country | clean_slug}}/{{data.country_id}}"> {{data.country}}</a> /
+                        {{data.city_ascii}}
+                    </div>
+                    <h1 class="fs_60px">
+                        {{data.city_ascii}}
+                    </h1>
+                    <p class="fs_18 figtree" style="text-align: justify;">
+                        {{data.introduction}}
+                    </p>
+
+                </div>
+                <div class="col-lg-6 br_10" style="margin-left: .5rem;">
+                    <img class="br_10" width="100%" src="{{data.filter_logo}}" alt="{{data.city_ascii}}">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    {% if reels %}
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                Trending Reels
+            </h2>
+
+            <div class="grid-reels mt-4">
+                {% for b in reels %}
+                <div>
+
+                    <div style="position: relative; border-bottom-left-radius:10px;  border-bottom-right-radius:10px">
+                        <img class="br_10" src="{% static 'uploads/' %}{{b.thumbnail_image}}" width="100%"
+                            height="100%">
+
+                        <div onclick="showvideo({{b.id}},'{{b.product_name}}','{{ b.video_url}}')"
+                            class="overlaay-play d-flex align-items-center justify-content-center"
+                            style="cursor:pointer;position: absolute;width: 100%;height: 90%;top: 0;">
+                            <img src="{% static 'assets/' %}play.png" style="height: 50px;filter: opacity(0.9);">
+                        </div>
+                    </div>
+
+                    <p class="mt-2 fs_14">
+                        {{b.product_name}}
+                    </p>
+                </div>
+                {%endfor%}
+
+
+            </div>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                Popular Cities
+            </h2>
+
+            <div class="mt-4" id="items-list">
+                {% for des in home_dests %}
+                <a class="h-100" style="text-decoration: none;" href="city/{{des.city_ascii | clean_slug}}/{{des.id}}">
+                    <div class="br_10 position-relative h-100">
+                        <img width="100%" class="br_10 position-relative h-100" style="z-index: -1;" height=""
+                            src="{{ des.filter_logo }}">
+                        <button class="btn mt-2 fs_14 text-white position-absolute fw_600 city-button">
+                            Explore
+                        </button>
+                    </div>
+                </a>
+
+                {%endfor%}
+
+            </div>
+
+        </div>
+
+    </div>
+    {% if tags %}
+    <div class="container mt-5 ">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                Your Ultimate Destination Guide: Tips, Tricks & Travel Gems
+            </h2>
+            <div class="grid-reels">
+                {% for t in tags %}
+                <div class="">
+                    <div class=" section-not-bg p-3" style="height: 180px;">
+                        <h4 class="fs_18">
+                            {{ t.tag_cat_name}}
+                        </h4>
+                        <p class="lineclamp3 fs_14">
+                            {{t.tag_name}}
+                        </p>
+
+                        <a
+                            href="city/{{data.city_ascii | clean_slug}}/category/{{t.tag_cat_name | clean_slug}}/{{t.tag_name | clean_slug}}/{{t.id}}">
+                            Learn More ->
+                        </a>
+                    </div>
+
+                </div>
+                {%endfor%}
+
+
+            </div>
+        </div>
+
+    </div>
+
+    {% endif %}
+
+    {% if faqs_data.FAQs %}
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                FAQs
+            </h2>
+            <div>
+                <div class="accordion" id="accordionExample" style="border: 1px solid black; color: black !important;">
+                    {% for category, questions in faqs_data.FAQs.items %}
+                    <!-- <h3 style="padding:10px;color:#000;font-weight:bold;">{{ category }}</h3> -->
+                    {% for question in questions %}
+                    <div class="accordion-item" style="border-bottom: 1px solid black;">
+                        <h2 class="accordion-header" id="heading{{ forloop.counter0 }}">
+                            <button style="background-color: white;box-shadow: unset;color:black;"
+                                class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapse{{ forloop.counter0 }}" aria-expanded="false"
+                                aria-controls="collapse{{ forloop.counter0 }}">
+                                {{ question.Question }}
+                            </button>
+                        </h2>
+                        <div id="collapse{{ forloop.counter0 }}" class="accordion-collapse collapse"
+                            aria-labelledby="heading{{ forloop.counter0 }}" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                {{ question.Answer }}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+    {% endif %}
+
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                Tag us on your next trip.
+            </h2>
+
+            <div class="d-flex justify-content-center">
+
+                <div class="col-lg-4 col-md-4 col-12 mt-4" width="100%">
+                    <img class="br_10" width="100%" src="{% static 'assets/tra_verve_qr.png' %}">
+                </div>
+
+
+            </div>
+
+            <p class="fs_18 text-center mt-4">
+                #travelwithvibe #traverve #traveltogether #travelyourway #travelvibe
+            </p>
+        </div>
+
+    </div>
+
+    <div class="container-fluid p-0 mt-5" style="background-color: white;">
+
+        {% include "trav_web/footer.html" %}
+
+
+    </div>
+    <div class="modal fade mwebPositionedBottom " id="searchModal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel2" style="z-index: 11111111111;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content pop_up_lg" style="background-color: transparent;border: none;">
+                <!-- <div style="padding-left: 1.5rem;z-index: 1;position: absolute;" class="modal-header py-3  flex-column  shadow-lg align-items-start" style="border-bottom: 0;padding-bottom: 0 !important;">
+                    <div class="d-flex align-items-center justify-content-start">
+                        <div style="margin-right: 10px;" onclick="closesearch()" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 10px;">
+                            <img width="24" src="<?= base_url() ?>assets/previous.png">
+                        </div>
+                        <p style="color: white;" class="m-0" id="modaltitle"> </p>
+                    </div>
+                </div> -->
+
+                <div class="modal-body py-3"
+                    style="overflow: auto;background-color:transparent;position:relative;width:100%">
+                    <div class="p-4" style="z-index: 1;position: absolute;width:100%;top:0;left:0;right:0">
+                        <!-- <progress style="width: 100%;" id="progress" max="100" value="0">Progress</progress> -->
+                        <div class="d-flex align-items-center justify-content-start py-2">
+
+                            <div style="margin-right: 10px;" onclick="closesearch()" type="button" class="close"
+                                data-dismiss="modal" aria-label="Close" style="margin-right: 10px;">
+                                <img width="24" src="<?= base_url() ?>assets/previous.png">
+                            </div>
+                            <p style="color: white;" class="m-0" id="modaltitle"> </p>
+                        </div>
+                    </div>
+
+                    <video style="object-fit: cover;border-radius:10px;background:white;" src="" height="100%"
+                        width="100%" id="videopop" playsinline="">
+                    </video>
+                    <div id="play-overlay" class="p-4"
+                        style="cursor:pointer;position: absolute;width: 100%;height: 100%;top: 0;/*! top: 0; */left: 0;right: 0;">
+                    </div>
+                    <div id="viewdetails" class="p-3 m-3"
+                        style="overflow:auto;display:none;border-radius:10px;z-index:2;cursor:pointer;position: absolute;background-color:white;height: 50%;bottom: 0;left: 0;right: 0;">
+                        <div id="more_des" style="text-align: justify;"></div>
+                    </div>
+                    <div onclick="moredetails()" class="p-4 text-center"
+                        style="cursor:pointer;font-size:12px;color:white;z-index: 1;position: absolute;width:100%;bottom:0;left:0;right:0">
+                        <p class="m-0">View Details</p>
+                    </div>
+                    <!-- <video id="my-video" class="video-js" controls preload="auto" height="500" width="350" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+                        <source src="https://s3.ap-south-1.amazonaws.com/whatmore.instagram.import.dump/STRSE24S5IS/C6TaZw3N-f-.mp4" type="video/mp4" />
+                        <p class="vjs-no-js">
+                            To view this video please enable JavaScript, and consider upgrading to a
+                            web browser that
+                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                        </p>
+                    </video> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://vjs.zencdn.net/8.12.0/video.min.js"></script>
+<script src="<?= base_url() ?>admin/js/vendor.min.js"></script>
+<script src="<?= base_url() ?>admin/js/app.min.js"></script>
+<script>
+    function closesearch() {
+
+        $("#searchModal").modal("hide");
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+    }
+
+    $('#searchModal').on('hide.bs.modal', function (e) {
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+    })
+
+    function searchforcity() {
+        $("#searchbox").removeClass("d-none");
+        $("#backdrop").removeClass("d-none");
+        document.body.style.overflow = "hidden"
+        $("#searchfield").focus()
+    }
+
+    function closebox() {
+        $("#searchlist").html("");
+        document.body.style.overflow = "auto"
+        $("#searchbox").addClass("d-none");
+        $("#backdrop").addClass("d-none");
+    }
+
+    function transformString(string) {
+        string = string.trim().replace(/ /g, '-');
+        string = string.replace(/[^A-Za-z0-9\-]/g, '');
+        string = string.replace(/\s+-\s*|\s*-\s+/g, '-');
+        return string.replace(/-+/g, '-');
+    }
+
+
+    function searchdestinations(check = null) {
+        var srchkey = $("#searchfield").val();
+        $("#searchlist").html("");
+        var json = {};
+
+
+        if (srchkey.length >= 3) {
+
+            if (check != null) {
+                json = {
+                    "type": "country",
+                    "search_key": srchkey,
+                    "search_id": check
+                }
+            } else {
+                json = {
+                    "type": "destination",
+                    "search_key": srchkey,
+
+                }
+            }
+
+
+            $.ajax({
+                url: "{{ request.scheme }}://{{ request.get_host }}/searchdestinations",
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(json)
+            }).done(function (res) {
+                // var response = JSON.parse(res);
+                $("#searchlist").html("");
+                var list = res.list;
+                list.forEach(element => {
+
+                    var html = "";
+
+                    if (element.type == "city")
+                        html += '<a href="{{ request.scheme }}://{{ request.get_host }}/city/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+                    else
+                        html += '<a href="{{ request.scheme }}://{{ request.get_host }}/country/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+
+                    html += '<div class="d-flex align-items-center">' +
+                        '<img width="50" height="50" class="br_10" src="' + element.image + '">' +
+                        '<div class="mx-2"><p class="mb-1 fs_14 text-black">' + element.destination + '</p>';
+
+                    if (element.type == "city")
+                        html += '<p class="m-0 fs_12" style="color:#707070;">' + element.country + '</p>';
+
+                    html += '</div></div></a>';
+
+                    $("#searchlist").append(html);
+                });
+            });
+        }
+
+    }
+
+
+    $("#play-overlay").on('mouseup', function (e) {
+        document.getElementById('videopop').play();
+
+        touchendX = e.changedTouches[0].screenX
+
+        if (touchendX > touchstartX) {
+            start--;
+            videoplay();
+        } else {
+            start++;
+            videoplay();
+        }
+
+        if (morestatus)
+            $("#viewdetails").hide();
+    });
+
+    $("#play-overlay").on('touchend', function (e) {
+        document.getElementById('videopop').play();
+
+        touchendX = e.changedTouches[0].screenX
+
+        if (touchendX > touchstartX) {
+            start--;
+            videoplay();
+        } else {
+            start++;
+            videoplay();
+        }
+
+        if (morestatus)
+            $("#viewdetails").hide();
+    });
+
+    $("#play-overlay").on('mousedown', function (e) {
+        document.getElementById('videopop').pause();
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+
+        touchstartX = e.changedTouches[0].screenX
+    });
+
+    $("#play-overlay").on('touchstart', function (e) {
+        document.getElementById('videopop').pause();
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+        touchstartX = e.changedTouches[0].screenX
+    });
+
+    var showtitle = "";
+    var videoslist = [];
+    var start = 0;
+
+    function showvideo(id, name, url) {
+        $.ajax({
+            url: "<?= base_url() ?>/getvideos",
+            type: 'post',
+            dataType: 'json',
+            data: {
+                searchkey: id
+            }
+        }).done(function (res) {
+            showtitle = res.product_name;
+            videoslist = res.videos;
+            start = 0;
+            $("#modaltitle").html("");
+            $("#modaltitle").html(showtitle);
+            $("#videopop").attr("src", videoslist[start].video_url);
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        });
+        videoplay()
+    }
+
+    var morestatus = false // closed
+
+    function moredetails() {
+        morestatus = true
+        document.getElementById('videopop').pause();
+        $("#viewdetails").show();
+        $("#more_des").html(videoslist[start].description)
+    }
+
+    function videoplay() {
+
+        if (videoslist.length > 1 && (start >= 0 && start < videoslist.length)) {
+            $("#videopop").attr("src", "");
+            $("#videopop").attr("src", videoslist[start].video_url);
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        }
+
+        $("#searchModal").modal("show");
+    }
+</script>

@@ -1,0 +1,2982 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% if seo_data %}
+    <title>{{ seo_data.title }}</title>
+    <meta name="description" content="{{ seo_data.seo_description }}">
+    <meta property="og:title" content="{{ seo_data.og_title }}">
+    <meta property="og:description" content="{{ seo_data.og_description }}">
+    {% endif %}
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:url" content="/">
+    <link rel="canonical" href="/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/avicon-16x16.png' %}">
+
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="classification" content="Traverve - Trip Planner" />
+    <meta property="og:site_name" content="Traverve" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'assets' %}/og_travel_img.jpeg" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Passion+One:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://vjs.zencdn.net/8.12.0/video-js.css" rel="stylesheet" />
+
+    <link href="{% static 'assets' %}/travel-styles.css" rel="stylesheet" />
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.6/ui-bootstrap-tpls.min.js"></script>
+
+
+    <style>
+        body {
+            font-family: "Figtree", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 14px;
+        }
+
+        .figtree {
+            font-family: "Figtree", sans-serif;
+        }
+
+        .passion {
+            font-family: "Passion One";
+        }
+
+        .list-item {
+            opacity: 1 !important;
+            /* Ensure it stays fully visible */
+        }
+
+        .list-item.dragging {
+            opacity: 1 !important;
+            background: lightblue;
+            /* Optional: Highlight dragged item */
+        }
+
+        .gap-5 {
+            gap: 5px;
+        }
+
+        body {
+            background: #FFF9F4;
+        }
+
+        .section-not-bg {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+
+        }
+
+        .nav-header {
+            font-size: 14px;
+            font-style: normal;
+            /* font-weight: 600; */
+            gap: 40px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* HTML: <div class="loader"></div> */
+        .loader {
+            width: 50px;
+            aspect-ratio: 1;
+            display: grid;
+            border: 4px solid #0000;
+            border-radius: 50%;
+            border-right-color: #25b09b;
+            animation: l15 1s infinite linear;
+        }
+
+        .loader::before,
+        .loader::after {
+            content: "";
+            grid-area: 1/1;
+            margin: 2px;
+            border: inherit;
+            border-radius: 50%;
+            animation: l15 2s infinite;
+        }
+
+        .loader::after {
+            margin: 8px;
+            animation-duration: 3s;
+        }
+
+        @keyframes l15 {
+            100% {
+                transform: rotate(1turn)
+            }
+        }
+
+
+        .normal-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            font-family: "Passion One";
+        }
+
+        .banner {
+            background: url("{% static 'assets' %}/banner-city.png") repeat;
+            /* background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat;
+            background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat; */
+
+            min-height: 400px;
+
+        }
+
+        .bg-button {
+            border-radius: 40px;
+            font-family: "Passion One";
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            background: var(--Primary-5, #E5855D);
+        }
+
+        .title-heading {
+            color: var(--Gray-24, #0A0A0A);
+            text-align: center;
+            /* font-variant-numeric: lining-nums proportional-nums; */
+            font-family: "Passion One";
+            font-size: 120px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 100px;
+        }
+
+        .fs_60px {
+            font-size: 60px;
+            font-family: "Passion One";
+
+        }
+
+        .banner-overlay {
+            background: url("<{% static 'assets' %}/banner-left.png") left no-repeat,
+            url("{% static 'assets' %}/banner-right.png") right no-repeat;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fs_24 {
+            font-size: 24px;
+        }
+
+        .fw_600 {
+            font-weight: 600;
+        }
+
+        .bg_white {
+            background-color: white;
+        }
+
+        .section {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000;
+
+        }
+
+        .section-not-bg {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+
+        }
+
+        .secondary-header {
+            font-size: 44px;
+            font-style: normal;
+            font-weight: 600;
+            /* line-height: 28px; */
+
+        }
+
+        .br_10 {
+            border-radius: 10px;
+        }
+
+        .fs_14 {
+            font-size: 14px;
+        }
+
+        .fs_18 {
+            font-size: 18px;
+        }
+
+        .w_19 {
+            width: 19%;
+        }
+
+        .w_49 {
+            width: 49%;
+        }
+
+        .bg-black {
+            background-color: black;
+        }
+
+        .color_grey {
+            color: #757575
+        }
+
+        .border-grey {
+            border: 1px solid #757575
+        }
+
+        .lineclamp3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .lineclamp1 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+        }
+
+        .city-button {
+            bottom: 15px;
+            z-index: 111;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            border-radius: 15px;
+            background: black;
+            opacity: 0.7;
+        }
+
+        .search-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+        }
+
+        #slides_control>div {
+            height: 200px;
+        }
+
+        #slides_control {
+            position: absolute;
+            width: 400px;
+            left: 50%;
+            top: 20px;
+            margin-left: -200px;
+        }
+
+        .datepicker {
+            border: none;
+            font-size: 14px;
+            padding: 0;
+            font-weight: 600;
+        }
+
+        .datepicker:focus {
+            box-shadow: none !important;
+        }
+
+        .uib-datepicker-popup .btn:disabled {
+            border: none;
+            color: #545456;
+        }
+
+        .uib-datepicker-popup .btn-info {
+            --bs-btn-bg: #c8c8cb;
+            --bs-btn-border-color: #c8c8cb;
+        }
+
+        .uib-datepicker-popup .btn.active {
+            color: #E5855D !important;
+            background-color: #c8c8cb !important;
+            border: #c8c8cb;
+        }
+
+        .uib-datepicker-popup .text-info {
+            color: #E5855D !important;
+        }
+
+        .uib-datepicker-popup .btn.active .text-info {
+            color: #E5855D !important;
+        }
+
+        li.uib-button-bar {
+            display: none !important;
+        }
+
+        .uib-datepicker-popup {
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        /* Custom Styles for Datepicker Arrows */
+        .uib-datepicker .uib-right .glyphicon {
+            border: solid black;
+            border-width: 0px 5px 5px 0;
+            display: inline-block;
+            padding: 5px;
+            transform: rotate(-45deg);
+            -webkit-transform: rotate(-45deg);
+        }
+
+        .uib-datepicker .uib-right .sr-only {
+            display: none !important;
+        }
+
+        .uib-datepicker .uib-left .glyphicon {
+            border: solid black;
+            border-width: 0px 5px 5px 0;
+            display: inline-block;
+            padding: 5px;
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+        }
+
+        .uib-datepicker .uib-left .sr-only {
+            display: none !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div ng-app="tripApp" id="tripcontroller" ng-controller="tripController">
+        <div id="backdrop" ng-click="closebox()" class="d-none"
+            style="position: absolute;width:100%;height:100%;z-index:.5;background: rgba(0,0,0,.4);">
+
+        </div>
+        <div class="container-fluid p-0">
+            <div class="" style="padding-bottom: 70px">
+                <div class="position-fixed container-fluid border-bottom p-3 px-lg-5"
+                    style="background: #FFF9F4;  z-index: 11;">
+                    <header>
+                        <div class="d-flex align-items-center justify-content-between position-relative">
+                            <img width="35" height="50" src="{% static 'assets' %}/short_logo.png" alt="Logo"
+                                title="Traverve - Logo">
+
+                            <nav class="nav-header">
+                                <div class="">
+                                    <input type="checkbox" ng-model="status" ng-change="updatestatus()">
+                                    Make this trip as Public
+                                </div>
+                                <div>
+                                    <div ng-click="save_trip()" class="br_10 fw_600 p-2 px-3 cursor-pointer"
+                                        style="background-color: #E5855D;">
+                                        <img width="15" height="15"
+                                            src="https://img.icons8.com/fluency-systems-regular/50/save--v1.png"
+                                            alt="save--v1" /> Save
+                                    </div>
+                                </div>
+
+
+
+                            </nav>
+                        </div>
+                    </header>
+
+                </div>
+            </div>
+
+
+            <div class="container-fluid">
+
+                <div class="d-flex">
+
+                    <!-- <div class="col-2">
+                    <div class="p-3 pt-5 fw_600">
+                        <a>
+                            Trip Builder
+                        </a> <br><br>
+                        <a>
+                            Home
+                        </a> <br><br>
+                        <a>
+                            Account
+                        </a> <br><br>
+                        <a>
+                            My Trips
+                        </a> <br><br>
+                    </div>
+                </div> -->
+
+
+
+                    <div class="col-12 col-lg-7">
+                        <div class="p-0 p-lg-3">
+                            <input class="fs_40 fw_600"
+                                style="border: none;width:100%;outline:none; background: #FFF9F4;" type="text"
+                                ng-model="title" placeholder="Add a title" value="">
+                            <div class="" style="font-size:12px;color:#757575;">
+                                Let's Start: Pick your cities, add how many days you'll stay, and let's get planning—no
+                                limits, go wild!
+                            </div>
+
+
+
+                            <div class="mt-3">
+                                <div class="" ng-show="triplist[0].destinationa.value ==''">
+                                    <span>Starting From</span>
+                                    <div class="mt-2 bg_white p-3 fw_600 br_10" style="color:#757575;">
+
+                                        <input class="fw_600" ng-change="searchdestinations('from')"
+                                            style="border:none ;width:100%;outline:none;" type="text"
+                                            ng-model="start_from" name="start_from"
+                                            placeholder="Search Departing Point">
+
+
+                                    </div>
+
+                                    <div class="position-relative">
+
+                                        <div ng-if="fromsearchbox"
+                                            class="position-absolute cursor-pointer  p-3 bg-white"
+                                            style="width: 100%; 
+                                             margin:auto;left:0;right:0;top:0;border-radius:25px;z-index:1111;box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25)">
+
+
+                                            <div class="px-3 d-flex flex-column"
+                                                style="max-height: 300px; overflow:auto;gap:10px;">
+                                                <div ng-repeat="srch in searchlist track by $index"
+                                                    ng-click="selectdestination('from',$index)"
+                                                    class="d-flex align-items-center">
+                                                    {% verbatim %}
+                                                    <img width="50" height="50" class="br_10" src="{{ srch.image }}">
+
+                                                    <div class="mx-2">
+                                                        <p class="mb-1 fs_14 text-black">
+                                                            {{srch.destination}}
+                                                        </p>
+                                                        <p ng-if="srch.type == 'city'" class="m-0 fs_12"
+                                                            style="color:#707070;">
+                                                            {{srch.country}}
+                                                        </p>
+                                                    </div>
+                                                    {% endverbatim %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="mt-3 p-3 br_10 bg_white" ng-show="triplist[0].destinationa.value !=''"
+                                    style="border: 1.5px solid black;">
+                                    <div class="d-flex align-items-center w-100 bg_white ">
+                                        <!-- box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000; -->
+                                        <div class="d-flex align-items-center gap-4  justify-content-between">
+                                            <div>
+                                                {% verbatim %}
+                                                <img width="60" height="60" class="br_10"
+                                                    src="{{ triplist[0].destinationa.image }}">
+                                                {% endverbatim %}
+                                            </div>
+
+                                            <div>
+                                                <span style="font-size: 10px;">
+                                                    Starting From
+                                                </span> <br>
+
+                                                {% verbatim %}
+                                                <span class="fw_600">
+                                                    {{ triplist[0].destinationa.value}}
+                                                </span>
+                                                {% endverbatim %}
+                                            </div>
+                                        </div>
+
+
+                                        <div class="d-flex align-items-center gap-2">
+                                            <div>
+                                                {% verbatim %}
+                                                <input type="text" ng-click="openDatepicker()"
+                                                    class="text-end form-control datepicker cursor-pointer"
+                                                    uib-datepicker-popup="{{format}}" ng-model="selectedDate"
+                                                    is-open="popup.opened" datepicker-options="dateOptions"
+                                                    ng-required="true" close-text="Close" readonly />
+                                                {% endverbatim %}
+                                            </div>
+
+                                            <div class="cursor-pointer" ng-click="toggle(0)">
+                                                <img ng-if="!activeIndex" src="{% static 'assets' %}/arrow_drop_up.svg">
+                                                <img ng-if="activeIndex" src="{% static 'assets' %}/arrow_drop_up.svg">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div ng-show="activeIndex === 0">
+                                        <div ng-repeat="link in triplist[0].days[0].links track by $index"
+                                            class="mt-3 d-flex align-items-center w-100 bg_white p-3 br_10"
+                                            style="border: 1.5px solid #F0F0F0;">
+                                            {% verbatim %}
+                                            <div style="width: 15%;" ng-if="link.image.length > 0">
+                                                <img style="border-radius:10px" width="60" height="60"
+                                                    src="{{ link.image }}">
+                                            </div>
+                                            <div style="width: 80%;overflow:hidden;">
+                                                <h4 class="fs_18 passion">
+                                                    {{ link.title }}
+                                                </h4>
+                                                <p class="fs_12">
+                                                    {{ link.description }}
+                                                </p>
+                                                <img width="10" height="10"
+                                                    src="https://img.icons8.com/ios-filled/50/link--v1.png"
+                                                    alt="link--v1" />
+                                                <a style="white-space: nowrap;" href="{{link.link}}">
+                                                    {{link.link}}
+                                                </a>
+                                            </div>
+                                            {% endverbatim %}
+                                            <div style="width: 5%;" ng-click="removelinks(0,0,$index)">
+                                                <img src="{% static 'assets' %}/delete.png">
+                                            </div>
+                                        </div>
+                                        <div ng-repeat="note in triplist[0].days[0].notes track by $index"
+                                            class="mt-3  w-100 bg_white p-3 br_10" style="border: 1.5px solid #F0F0F0;">
+                                            <div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="10"
+                                                    height="10" viewBox="0 0 50 50">
+                                                    <path
+                                                        d="M 14 4 C 8.486 4 4 8.486 4 14 L 4 36 C 4 41.514 8.486 46 14 46 L 36 46 C 41.514 46 46 41.514 46 36 L 46 14 C 46 8.486 41.514 4 36 4 L 14 4 z M 6 18 L 44 18 L 44 26 L 6 26 L 6 18 z M 8 20 L 8 22 L 10 22 L 10 20 L 8 20 z M 12 20 L 12 22 L 14 22 L 14 20 L 12 20 z M 16 20 L 16 22 L 18 22 L 18 20 L 16 20 z M 20 20 L 20 22 L 22 22 L 22 20 L 20 20 z M 24 20 L 24 22 L 26 22 L 26 20 L 24 20 z M 28 20 L 28 22 L 30 22 L 30 20 L 28 20 z M 32 20 L 32 22 L 34 22 L 34 20 L 32 20 z M 36 20 L 36 22 L 38 22 L 38 20 L 36 20 z M 40 20 L 40 22 L 42 22 L 42 20 L 40 20 z M 6 28 L 44 28 L 44 35 L 6 35 L 6 28 z M 6 37 L 44 37 C 43.505 40.94 40.072 44 36 44 L 14 44 C 9.928 44 6.495 40.94 6 37 z">
+                                                    </path>
+                                                </svg>
+
+                                                Notes
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                {% verbatim %}
+                                                <div class="passion fw_600 fs_18" style="width: 80%;">
+                                                    {{ note }}
+                                                </div>
+                                                {% endverbatim %}
+                                                <div style="width: 5%;" ng-click="removenotes(0,0,$index)">
+                                                    <img src="{% static 'assets' %}/delete.png">
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div ng-if="triplist[0].days[0].images.length>0"
+                                            class="mt-3 fw_600 d-flex align-items-center flex-wrap w-100 bg_white p-3 br_10"
+                                            style="border: 1.5px solid #F0F0F0;">
+                                            <div ng-repeat="img in triplist[0].days[0].images track by $index"
+                                                class="mr-2 position-relative" style="width: 20%">
+
+                                                <img width="100" style="border-radius:10px"
+                                                    ng-src="{% static 'uploads' %}/trips/{{trip.trip_id}}/{{img}}"
+                                                    style="max-height: 300px;max-width:100%">
+
+                                                <img ng-click="removeimage(0,0,$index)"
+                                                    class="position-absolute cursor-pointer" style="top:-10px;right:0;"
+                                                    src="{% static 'assets' %}/delete.png">
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="triplist[0].destinationb.value != ''"
+                                            class="mt-3 d-flex align-items-center">
+
+                                            <div style="width: 10%;">
+                                                <span class="p-2" style="border-radius: 50%;background: #E5855D">
+                                                    <img width="15" src="{% static 'assets' %}/plus-icon.svg"
+                                                        alt="plus icon">
+                                                </span>
+                                            </div>
+
+                                            <div class="d-flex flex-wrap" style="gap: 5px;">
+
+
+
+                                                <div ng-click="fileupload(0,0)" class="br_10 px-3 p-1 cursor-pointer"
+                                                    style="border: 2px solid black !important;">
+                                                    Image
+                                                </div>
+
+                                                <div ng-click="addnotes(0,0)" class="br_10 px-3 p-1 cursor-pointer"
+                                                    style="border: 2px solid black !important;">
+                                                    Notes
+                                                </div>
+
+                                                <div ng-click="addlinks(0,0)" class="br_10 px-3 p-1 cursor-pointer"
+                                                    style="border: 2px solid black !important;">
+                                                    Add Links
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div ng-repeat="trip in triplist track by $index" class="p-3 bg_white mt-5   br_10"
+                                    ng-init="parentIndex = $index" ng-if="$index > 0"
+                                    style="border: 1.5px solid black;">
+
+                                    <div class="">
+                                        <div class="">
+                                            <div ng-show="trip.destinationa.value != ''"
+                                                class=" d-flex align-items-center w-100 ">
+                                                {% verbatim %}
+                                                <div class="d-flex align-items-center gap-4" style="max-width : 60%;">
+                                                    <div>
+                                                        <img width="60" height="60" class="br_10"
+                                                            src="{{ trip.destinationa.image }}">
+                                                    </div>
+
+                                                    <div>
+                                                        <span class="fw_600">
+                                                            {{ trip.destinationa.value }}
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="p-2 mr-2"
+                                                    style="margin:auto;margin-right: 0;background-color: white;border:1.5px solid #c9c9c9;border-radius: 8px;">
+                                                    <span ng-click="daycounter($index)" class="p-1 px-2 ml-1">
+                                                        -
+                                                    </span>
+                                                    <span class="px-4">
+                                                        {{ trip.days.length }}
+                                                    </span>
+                                                    <span ng-click="addday($index)"
+                                                        class="p-1 px-2 ml-1 cursor-pointer">
+                                                        +
+                                                    </span>
+                                                </div>
+                                                {% endverbatim %}
+                                                <!-- <div class="cursor-pointer" ng-click="removedestination($index)">
+                                                <img src="<?= base_url('/assets/delete.png') ?>">
+                                            </div> -->
+
+                                                <div class="cursor-pointer" ng-click="toggle($index)">
+                                                    <img ng-if="!activeIndex"
+                                                        src="{% static 'assets' %}/arrow_drop_up.svg">
+                                                    <img ng-if="activeIndex"
+                                                        src="{% static 'assets' %}/arrow_drop_up.svg">
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div ng-show="activeIndex === parentIndex"
+                                            ng-repeat="day in trip.days track by $index" ng-init="dayindex = $index"
+                                            class="mt-4" class="mt-4 ">
+                                            <div class="mb-2">
+                                                Day {{'{{$index+1}}'}}
+                                            </div>
+
+                                            <div droppable id="{{'{{ dayindex }}'}}"
+                                                ng-attr-data-index="{{'{{parentIndex}}'}}">
+                                                <div draggable class="list-item"
+                                                    ng-repeat="item in day.items track by $index" id="{{'{{$index}}'}}">
+                                                    <div ng-if="item.type == 'hotel'"
+                                                        class="mt-3  d-flex align-items-center justify-content-between w-100 bg_white p-3 br_10"
+                                                        style="border: 1.5px solid #F0F0F0;">
+                                                        <div class="d-flex align-items-center gap-3"
+                                                            style="max-width: 70%;">
+                                                            <div>
+                                                                <img src="{{'{{ item.img }}'}}" width="60" height="60"
+                                                                    class="border" style="border-radius:10px">
+                                                            </div>
+                                                            <div>
+                                                                <p class="d-flex gap-2">
+                                                                    <img width="15"
+                                                                        src="{% static 'assets' %}/hotel.svg">
+                                                                    <span class="m-0 fw_600">{{'{{ item.hotel_name }}'}}
+                                                                    </span>
+                                                                </p>
+                                                                <p class="d-flex gap-2 m-0">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                        version="1.1" width="15" height="20"
+                                                                        viewBox="0 0 256 256" xml:space="preserve">
+
+                                                                        <defs>
+                                                                        </defs>
+                                                                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                                            transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                                                                            <path
+                                                                                d="M 45 1.802 c 16.583 0 30.075 13.491 30.075 30.075 c 0 7.102 -2.538 14.004 -7.145 19.434 L 45 78.317 L 22.07 51.311 c -4.608 -5.43 -7.145 -12.332 -7.145 -19.434 C 14.925 15.294 28.417 1.802 45 1.802 M 45 45.692 c 8.222 0 14.912 -6.689 14.912 -14.912 c 0 -8.222 -6.689 -14.912 -14.912 -14.912 S 30.088 22.557 30.088 30.78 C 30.088 39.002 36.778 45.692 45 45.692 M 45 0 C 27.395 0 13.123 14.272 13.123 31.877 c 0 7.86 2.858 15.043 7.573 20.6 L 45 81.101 l 24.304 -28.624 c 4.716 -5.558 7.573 -12.741 7.573 -20.6 C 76.877 14.272 62.605 0 45 0 L 45 0 z M 45 43.889 c -7.24 0 -13.11 -5.869 -13.11 -13.11 c 0 -7.24 5.869 -13.11 13.11 -13.11 s 13.11 5.869 13.11 13.11 C 58.11 38.02 52.24 43.889 45 43.889 L 45 43.889 z"
+                                                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                                                transform=" matrix(1 0 0 1 0 0) "
+                                                                                stroke-linecap="round" />
+                                                                            <path
+                                                                                d="M 58.814 71.531 l -1.575 1.575 c 9.772 1.532 15.583 4.707 15.583 7.094 c 0 3.261 -10.838 7.997 -27.822 7.997 S 17.178 83.461 17.178 80.2 c 0 -2.387 5.811 -5.562 15.583 -7.094 l -1.575 -1.575 c -9.401 1.643 -15.81 4.907 -15.81 8.669 c 0 5.412 13.263 9.8 29.625 9.8 c 16.361 0 29.625 -4.388 29.625 -9.8 C 74.625 76.439 68.215 73.174 58.814 71.531 z"
+                                                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                                                transform=" matrix(1 0 0 1 0 0) "
+                                                                                stroke-linecap="round" />
+                                                                        </g>
+                                                                    </svg>
+                                                                    <span class="m-0 color_grey">{{'{{ item.city }}'}},
+                                                                        {{'{{ item.country }}'}}</span>
+                                                                </p>
+                                                            </div>
+                                                        </div>
+
+                                                        <div>
+                                                            <div class="text-center mr-2">
+                                                                <div class="m-0 p-2 px-3 border-grey"
+                                                                    style="border-radius: 20px;">
+                                                                    View <span class="d-none d-lg-block">More</span>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- <div class="cursor-pointer" ng-click="removehotels(parentIndex, dayindex, $index)">
+                                                            <img src="<?= base_url('/assets/delete.png') ?>">
+                                                                </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="item.type == 'ttd'"
+                                                        class="mt-3  d-flex align-items-center justify-content-between w-100 bg_white p-3 br_10"
+                                                        style="border: 1.5px solid #F0F0F0;">
+                                                        <div class="d-flex gap-3 align-items-center">
+                                                            <div>
+                                                                <img class="border" style="border-radius:10px"
+                                                                    width="60" height="60"
+                                                                    src="https://img.icons8.com/nolan/64/to-do.png"
+                                                                    alt="to-do" />
+                                                            </div>
+
+                                                            <div>
+                                                                <span class="fw_600" style="font-size: 14px;">
+                                                                    {{'{{ item.name }}'}}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div ng-if="item.type == 'link'"
+                                                        class="mt-3 d-flex align-items-center justify-content-between w-100 bg_white p-3 br_10"
+                                                        style="border: 1.5px solid #F0F0F0;">
+                                                        <div class="d-flex gap-3 align-items-center">
+                                                            <div ng-if="item.image.length > 0">
+                                                                <img class="border"
+                                                                    style="border-radius:10px;object-fit:scale-down"
+                                                                    width="60" height="60" src="{{'{{ item.image }}'}}">
+                                                            </div>
+                                                            <div style="overflow:hidden;">
+                                                                <div class="d-flex align-items-center gap-2 mb-2">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                                        version="1.1" width="10" height="15"
+                                                                        viewBox="0 0 256 256" xml:space="preserve">
+                                                                        <defs>
+                                                                        </defs>
+                                                                        <g style="stroke: none; stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: none; fill-rule: nonzero; opacity: 1;"
+                                                                            transform="translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)">
+                                                                            <path
+                                                                                d="M 21.36 89.995 c -5.471 0 -10.942 -2.082 -15.107 -6.248 c -4.035 -4.036 -6.258 -9.4 -6.258 -15.107 c 0 -5.708 2.222 -11.073 6.258 -15.107 l 16.659 -16.66 c 1.563 -1.562 4.095 -1.562 5.658 0 c 1.562 1.563 1.562 4.095 0 5.658 L 11.91 59.19 c -2.525 2.525 -3.914 5.881 -3.914 9.45 s 1.39 6.926 3.914 9.45 c 5.211 5.21 13.69 5.212 18.899 0 l 16.661 -16.66 c 1.561 -1.563 4.096 -1.563 5.657 0 c 1.563 1.562 1.563 4.095 0 5.657 l -16.66 16.66 C 32.302 87.913 26.831 89.995 21.36 89.995 z"
+                                                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                                                transform=" matrix(1 0 0 1 0 0) "
+                                                                                stroke-linecap="round" />
+                                                                            <path
+                                                                                d="M 64.259 54.299 c -1.024 0 -2.048 -0.391 -2.828 -1.172 c -1.563 -1.562 -1.563 -4.095 0 -5.657 l 16.66 -16.661 c 5.211 -5.211 5.211 -13.689 0 -18.899 c -2.525 -2.524 -5.881 -3.914 -9.45 -3.914 s -6.926 1.39 -9.45 3.914 L 42.531 28.57 c -1.563 1.562 -4.095 1.562 -5.658 0 c -1.562 -1.563 -1.562 -4.095 0 -5.658 l 16.66 -16.66 c 4.035 -4.035 9.399 -6.258 15.107 -6.258 c 5.707 0 11.072 2.222 15.107 6.258 c 8.33 8.331 8.33 21.884 0 30.215 l -16.66 16.66 C 66.307 53.908 65.283 54.299 64.259 54.299 z"
+                                                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                                                transform=" matrix(1 0 0 1 0 0) "
+                                                                                stroke-linecap="round" />
+                                                                            <path
+                                                                                d="M 25.338 68.663 c -1.024 0 -2.048 -0.391 -2.829 -1.172 c -1.562 -1.562 -1.562 -4.095 0 -5.657 l 39.325 -39.325 c 1.561 -1.562 4.096 -1.562 5.657 0 c 1.563 1.563 1.563 4.095 0 5.658 L 28.167 67.491 C 27.385 68.272 26.362 68.663 25.338 68.663 z"
+                                                                                style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-linejoin: miter; stroke-miterlimit: 10; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;"
+                                                                                transform=" matrix(1 0 0 1 0 0) "
+                                                                                stroke-linecap="round" />
+                                                                        </g>
+                                                                    </svg>
+
+                                                                    <p class="m-0">
+                                                                        {{'{{ item.title }}'}}
+                                                                    </p>
+                                                                </div>
+
+                                                                <!-- <p class="mb-2 fs_12">
+                                                                    {{ item.description }}
+                                                                </p> -->
+                                                                <a class="color_grey" style="white-space: nowrap;"
+                                                                    href="{{'{{item.link}}'}}">
+                                                                    {{'{{item.link}}'}}
+                                                                </a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div ng-if="item.type == 'note'"
+                                                        class="mt-3 w-100 bg_white p-3 br_10"
+                                                        style="border: 1.5px solid #F0F0F0;">
+                                                        <div class="d-flex align-items-center mb-2 gap-2">
+                                                            <img width="15" height="15"
+                                                                src="{% static 'assets' %}/notes.svg">
+                                                            Notes
+                                                        </div>
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <p class="m-0 color_grey">
+                                                                {{'{{ item.note }}'}}
+                                                            </p>
+                                                            <!-- <div class="cursor-pointer" style="width: 5%;" ng-click="removenotes(parentIndex, dayindex, $index)">
+                                                            <img src="<?= base_url('/assets/delete.png') ?>">
+                                                        </div> -->
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div draggable ng-if="item.type == 'image'"
+                                                        class="mt-3 fw_600  w-100 bg_white p-3 br_10"
+                                                        style="gap:25px;border: 1.5px solid #F0F0F0;">
+                                                        <div class="d-flex align-items-center justify-content-between">
+                                                            <div class="d-flex align-items-center flex-wrap gap-3">
+                                                                <div ng-repeat="img in item.images track by $index">
+                                                                    <img ng-click="showImage(parentIndex, dayindex, $index)"
+                                                                        width="60" height="60"
+                                                                        class="cursor-pointer shadow-sm border"
+                                                                        style="border-radius:10px;object-fit: scale-down;"
+                                                                        src="{% static 'uploads' %}/trips/{{ trip.trip_id }}/{{'{{ img }}'}}">
+                                                                    <!-- <img ng-click="removeimage(parentIndex, dayindex, $index)" class="position-absolute cursor-pointer" style="top:-10px;right:0;" src="<?= base_url('/assets/delete.png') ?>"> -->
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="text-center mr-2 cursor-pointer"
+                                                                ng-click="fileupload(parentIndex,dayindex)">
+
+                                                                <div class="m-0 p-2 px-3 border-grey"
+                                                                    style="border-radius: 20px;">
+                                                                    <span>
+                                                                        <img src="{% static 'assets' %}/upload.svg">
+                                                                    </span>
+                                                                    Upload
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+
+                                            <!-- <div draggable ng-repeat="htl in day.hotels.list track by $index"
+                                                ng-init="hotelindex = $index" class="mt-3  d-flex align-items-center justify-content-between w-100 bg_white p-3 br_10" style="border: 1.5px solid #F0F0F0;">
+                                            </div> -->
+
+                                            <!-- <div draggable ng-repeat="ttd in day.ttds.list track by $index" class="mt-3 d-flex align-items-center justify-content-between w-100 bg_white p-3 br_10" style="border: 1.5px solid #F0F0F0;">
+                                               
+
+                                                <!- <div class="cursor-pointer" ng-click="removettds(parentIndex, dayindex, $index)">
+                                                <img src="<?= base_url('/assets/delete.png') ?>">
+                                                 </div> ->
+
+                                            </div> -->
+                                            <!-- <div draggable ng-repeat="link in day.links track by $index" class="mt-3 d-flex align-items-center justify-content-between w-100 bg_white p-3 br_10" style="border: 1.5px solid #F0F0F0;">
+
+                                                <!- <div class="cursor-pointer" style="width: 5%;" ng-click="removelinks(parentIndex, dayindex, $index)">
+                                                <img src="<?= base_url('/assets/delete.png') ?>">
+                                                </div> ->
+                                            </div> -->
+                                            <!-- <div draggable ng-repeat="note in day.notes track by $index" class="mt-3 w-100 bg_white p-3 br_10" style="border: 1.5px solid #F0F0F0;">
+
+
+
+                                            </div> -->
+
+
+
+
+                                            <div class="d-flex align-items-center mt-4 gap-2    ">
+                                                <!-- <div class="mr-2">
+                                                    Day {{$index+1}}
+                                                </div> -->
+
+                                                <div style="width: 32px">
+                                                    <span class="p-1" style="border-radius: 50%;background: #E5855D">
+                                                        <img width="15" src="{% static 'assets' %}/plus-icon.svg"
+                                                            alt="plus icon">
+                                                    </span>
+                                                </div>
+
+                                                <div class="d-flex gap-2 flex-wrap">
+
+                                                    <!-- <div ng-if="$index >= trip.days.length - 1 && trip.destinationb.value != ''" class="br_10 px-3 p-1 cursor-pointer" style="border: 2px solid black !important;">
+                                                        Add Flight
+                                                    </div> -->
+                                                    <div ng-click="addhotel(parentIndex, $index)"
+                                                        ng-if="$index < trip.days.length - 1"
+                                                        class="br_10 px-3 p-1 cursor-pointer"
+                                                        style="border: 1px solid black !important;">
+                                                        Add Hotel
+                                                    </div>
+
+                                                    <div ng-click="addactivity(parentIndex, $index)"
+                                                        class="br_10 px-3 p-1 cursor-pointer"
+                                                        style="border: 1px solid black !important;">
+                                                        Add Activity
+                                                    </div>
+
+                                                    <div ng-click="fileupload(parentIndex, $index)"
+                                                        class="br_10 px-3 p-1 cursor-pointer"
+                                                        style="border: 1px solid black !important;">
+                                                        Image
+                                                    </div>
+
+                                                    <div ng-click="addnotes(parentIndex, $index)"
+                                                        class="br_10 px-3 p-1 cursor-pointer"
+                                                        style="border: 1px solid black !important;">
+                                                        Notes
+                                                    </div>
+
+                                                    <div ng-click="addlinks(parentIndex, $index)"
+                                                        class="br_10 px-3 p-1 cursor-pointer"
+                                                        style="border: 1px solid black !important;">
+                                                        Add Links
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div ng-repeat="city in countrycities track by $index">
+                                    <div class="mt-5 d-flex align-items-center w-100 bg_white p-3 br_10"
+                                        style="border: 1.5px solid #F0F0F0;">
+                                        <div style="width: 15%;">
+                                            <img width="60" height="60" class="br_10"
+                                                src="https://traverve.com/uploads/1736173653_be4a632d5d653089d6c3.webp">
+                                        </div>
+
+                                        <div style="width: 80%;">
+                                            <span class="fw_600">
+                                                {{'{{ city.destination }}'}}
+                                            </span>
+                                        </div>
+
+
+
+                                        <div>
+                                            <img src="{% static 'assets' %}/delete.png">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="mt-4 bg-white p-2" ng-show="countryselection">
+                                    <div class="mt-3" style="width: 100%;">
+                                        <span class="fw_600" style="">
+                                            <input class="p-2 fw_600 br_10"
+                                                style="border:1px solid #757575;width:100%;outline:none;" type="text"
+                                                ng-model="country_to" name="country_to">
+                                        </span>
+                                    </div>
+
+
+                                    <div class="mt-3 d-flex align-items-center">
+                                        <input ng-change="searchdestinations('country')" class="p-2  fw_600 br_10"
+                                            style="border:1px solid #757575 ;width:100%;outline:none;" type="text"
+                                            ng-model="city_to" name="city_to" placeholder="Search by city">
+
+                                    </div>
+                                    <div class="position-relative">
+
+                                        <div ng-if="cityselectbox"
+                                            class="position-absolute cursor-pointer  p-3 bg-white"
+                                            style="width: 100%; 
+                                    margin:auto;left:0;right:0;top:0;border-radius:25px;z-index:1111;box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25)">
+
+
+                                            <div class="px-3 d-flex flex-column"
+                                                style="max-height: 300px; overflow:auto;gap:10px;">
+                                                <div ng-repeat="srch in countryselectlist track by $index"
+                                                    ng-click="selectdestination('countryselect',$index)"
+                                                    class="d-flex align-items-center">
+                                                    {% verbatim %}
+                                                    <img width="50" height="50" class="br_10" src="{{ srch.image }}">
+                                                    {% endverbatim %}
+                                                    <div class="mx-2">
+                                                        <p class="mb-1 fs_14 text-black">
+                                                            {{'{{srch.destination}}'}}
+                                                        </p>
+                                                        <p ng-if="srch.type == 'city'" class="m-0 fs_12"
+                                                            style="color:#707070;">
+                                                            {{'{{srch.country}}'}}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="mt-3 p-3 br_10 fw_600" style="background: #F2F2FC;">
+
+                                        <span>Recommended Cities :</span>
+                                        <div class="d-flex flex-wrap mt-2 align-items-center"
+                                            style="width: 100%;gap:8px">
+
+
+                                            <span ng-repeat="cty in recommendedcities track by $index"
+                                                ng-click="selectcity($index)" class="fw_600 cursor-pointer p-2 br_10"
+                                                style="color:#896DF4 ;border:2px solid #896DF4">
+                                                {{'{{ cty.destination }}'}}
+                                            </span>
+
+                                        </div>
+                                        <div ng-if="loader" class="d-flex justify-content-center">
+                                            <div class="loader text-center">
+
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <button ng-click="proceedselection()" class="mt-3 fw_600 fs_18 normal-button px-5"
+                                        type="button" style="padding:10px;background:white">
+                                        PROCEED
+                                    </button>
+
+
+                                </div>
+
+
+
+
+
+
+
+                                <div ng-show="!countryselection && triplist[0].destinationa.value !=''"
+                                    class="mt-5 d-flex align-items-center w-100">
+                                    <div style="width: 10%;">
+                                        <span class="p-2" style="border-radius: 50%;background: #E5855D">
+                                            <img width="15" src="{% static 'assets' %}/plus-icon.svg" alt="plus icon">
+                                        </span>
+                                    </div>
+
+                                    <div class="w-100">
+                                        <div class="bg_white p-3 px-4 fw_600 br_10 w-100"
+                                            style="color:#757575;border: 2px solid #757575;">
+
+                                            <input ng-change="searchdestinations('to')" class="fw_600"
+                                                style="border: none;width:100%;outline:none; " type="text"
+                                                ng-model="start_to" name="start_to" placeholder="Add Destination"
+                                                value="">
+
+
+                                        </div>
+                                        <div class="position-relative">
+
+                                            <div ng-if="tosearchbox"
+                                                class="position-absolute cursor-pointer  p-3 bg-white"
+                                                style="width: 100%; 
+                                            margin:auto;left:0;right:0;top:0;border-radius:25px;z-index:1111;box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25)">
+
+
+                                                <div class="px-3 d-flex flex-column"
+                                                    style="max-height: 300px; overflow:auto;gap:10px;">
+                                                    <div ng-repeat="srch in searchlist track by $index"
+                                                        ng-click="selectdestination('to',$index)"
+                                                        class="d-flex align-items-center">
+                                                        {% verbatim %}
+                                                        <img width="50" height="50" class="br_10" src="{{srch.image}}">
+                                                        {% endverbatim %}
+                                                        <div class="mx-2">
+                                                            <p class="mb-1 fs_14 text-black">
+                                                                {{'{{srch.destination}}'}}
+                                                            </p>
+                                                            <p ng-if="srch.type == 'city'" class="m-0 fs_12"
+                                                                style="color:#707070;">
+                                                                {{'{{srch.country}}'}}
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span class="" style="font-size:11px;color:#757575;">
+                                            Not sure where to go? Enter a country or region and watch amazing
+                                            recommendations unfold!
+                                        </span>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="sidemenumode" class="col-12 col-lg-5 bg-white p-4"
+                        style="position: fixed;right: 0; height: 100%;box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;">
+
+                        <div class="cursor-pointer position-absolute" ng-click="toggleMenu()" style="right : 0;">
+                            <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="35" height="35"
+                                viewBox="0 0 50 50">
+                                <path
+                                    d="M25,2C12.319,2,2,12.319,2,25s10.319,23,23,23s23-10.319,23-23S37.681,2,25,2z M33.71,32.29c0.39,0.39,0.39,1.03,0,1.42	C33.51,33.9,33.26,34,33,34s-0.51-0.1-0.71-0.29L25,26.42l-7.29,7.29C17.51,33.9,17.26,34,17,34s-0.51-0.1-0.71-0.29	c-0.39-0.39-0.39-1.03,0-1.42L23.58,25l-7.29-7.29c-0.39-0.39-0.39-1.03,0-1.42c0.39-0.39,1.03-0.39,1.42,0L25,23.58l7.29-7.29	c0.39-0.39,1.03-0.39,1.42,0c0.39,0.39,0.39,1.03,0,1.42L26.42,25L33.71,32.29z">
+                                </path>
+                            </svg>
+                        </div>
+
+                        <div ng-if="tab == 'links'" class="mt-2 position-relative"
+                            style="height: 90%;overflow: scroll; ">
+
+                            <h4 class="passion mb-5"> ADD LINKS </h4>
+                            <div ng-if="linkloader" class="text-center p-3" ng-if="hotelinfo.loader">
+                                <div style="height: 50%;"
+                                    class="d-flex flex-column align-items-center justify-content-center mt-5">
+                                    <div class="loader text-center">
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-if="!linkloader" class="mb-3" ng-repeat="link in addlinklist track by $index">
+                                <input class="fw_600 br_10 p-1"
+                                    style="border: 2px solid #767676;width:100%;outline:none; " type="text"
+                                    ng-model="addlinklist[$index]" placeholder="Add Link">
+                            </div>
+                            <div ng-if="!linkloader" ng-click="addlinklist.push('')"
+                                class="normal-button p-2 px-3 mt-3 text-right" style="float:right">
+                                <img src="{% static 'assets' %}/plus-icon.svg" alt="plus icon">
+                                Add More Links
+                            </div>
+
+
+                            <div ng-if="!linkloader" ng-click="getOgParams()"
+                                class="position-absolute cursor-pointer normal-button p-2 bg-black text-center text-white mt-3"
+                                style="width: 100%; bottom:0">
+
+                                Done
+                            </div>
+                        </div>
+
+                        <div ng-if="tab == 'notes'" class="mt-2 position-relative"
+                            style="height: 90%;overflow: scroll; ">
+
+                            <h4 class="passion mb-5"> ADD NOTES </h4>
+
+                            <div class="mb-3" ng-repeat="note in addnoteslist track by $index">
+                                <textarea class="fw_600 br_10 p-1"
+                                    style="border: 2px solid #767676;width:100%;outline:none; " type="text"
+                                    ng-model="addnoteslist[$index]"></textarea>
+                            </div>
+                            <div ng-click="addnoteslist.push('')" class="normal-button p-2 px-3 mt-3 text-right"
+                                style="float:right">
+                                <img src="{% static 'assets' %}/plus-icon.svg" alt="plus icon">
+                                Add More Notes
+                            </div>
+
+
+                            <div ng-click="savenotes()"
+                                class="position-absolute cursor-pointer normal-button p-2 bg-black text-center text-white mt-3"
+                                style="width: 100%; bottom:0">
+
+                                Done
+                            </div>
+                        </div>
+
+                        <div ng-if="tab == 'hotel'" class="mt-2 position-relative" style="height: 85%;">
+
+                            <h4 class="passion mb-5"> SELECT HOTELS </h4>
+
+                            <div ng-if="hotelslist.length == 0">
+                                <div class="text-center p-3" ng-if="hotelinfo.loader">
+                                    <div style="height: 50%;"
+                                        class="d-flex flex-column align-items-center justify-content-center mt-5">
+                                        <div class="loader text-center">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center p-3" ng-if="hotelinfo.nodata">
+                                    <p class="m-0 passion text-white"> No hotels available right now for the Selected
+                                        Date. </p>
+                                </div>
+                                <div class="text-center p-3" ng-if="hotelinfo.error">
+                                    <p class="m-0 passion text-white"> Something went wrong while fetching hotels.
+                                        please try again after sometime. </p>
+                                </div>
+                            </div>
+                            <div ng-if="hotelslist.length > 0" style="height:430px;overflow:scroll">
+                                <div ng-repeat="htl in hotelslist track by $index">
+                                    <div ng-click="selecthotels($index)"
+                                        class="my-2 p-2 d-flex align-items-center justify-content-between cursor-pointer"
+                                        style="border-radius:5px;font-size:14px;background-color: white;">
+
+                                        <div style="width: 30%;">
+                                            <img src="{{'{{ htl.img }}'}}" width="100" height="100"
+                                                style="border-radius:10px">
+                                        </div>
+                                        <div class="passion" style="width: 70%;">
+                                            <p class="m-0">{{'{{ htl.hotel_name }}'}} </p>
+                                            <p class="m-0"> Rating : {{'{{ htl.rating }}'}} </p>
+                                            <p class="m-0"> Prices Starts from INR {{'{{ htl.price }}'}} </p>
+                                            <p class="m-0 color_grey">{{'{{ htl.city }}'}}, {{'{{ htl.country }}'}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-click="toggleMenu()"
+                                class="position-absolute cursor-pointer normal-button p-2 bg-black text-center text-white mt-3"
+                                style="width: 100%; bottom:0">
+                                Done
+                            </div>
+                        </div>
+
+                        <div ng-if="tab == 'ttd'" class="mt-2 position-relative" style="height: 85%; ">
+
+                            <h4 class="passion mb-5"> SELECT ACTIVITIES </h4>
+
+                            <div ng-if="ttdlist.length == 0">
+                                <div class="text-center p-3">
+                                    <div style="height: 50%;"
+                                        class="d-flex flex-column align-items-center justify-content-center mt-5">
+                                        <div class="loader text-center">
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center p-3" ng-if="ttdinfo.nodata">
+                                    <p class="m-0 passion text-white"> No Things to do available right now. </p>
+                                </div>
+                                <div class="text-center p-3" ng-if="ttdinfo.error">
+                                    <p class="m-0 passion text-white"> Something went wrong while fetching hoels. please
+                                        try again after sometime. </p>
+                                </div>
+                            </div>
+                            <div ng-if="ttdlist.length > 0" style="height:430px;overflow:scroll">
+                                <div ng-repeat="ttd in ttdlist track by $index">
+                                    <div ng-click="selectttd($index)"
+                                        class="my-2 p-2 d-flex align-items-center justify-content-between cursor-pointer"
+                                        style="border: 2px solid #767676;border-radius:5px;font-size:14px;">
+                                        <div class="d-flex align-items-center">
+                                            <p class="m-0">{{'{{ ttd.name }}'}} </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div ng-click="toggleMenu()"
+                                class="position-absolute cursor-pointer normal-button p-2 bg-black text-center text-white mt-3"
+                                style="width: 100%; bottom:0">
+                                Done
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div ng-if="!sidemenumode" class="col-12 col-lg-5 d-none d-lg-block bg-white" id="explorediv"
+                        style="position: fixed;right: 0;overflow: scroll; height: 100%;">
+
+                        <div class="bg-black d-flex flex-column justify-content-center p-4"
+                            style="position: fixed;width: inherit; z-index: 11;">
+                            <h2 class="passion text-center text-white">
+                                Explore your travel Vibe
+                            </h2>
+                            <div class="position-relative">
+
+                                <div ng-click="searchforcity()" class="search-button cursor-pointer mb-4 p-3 bg-white"
+                                    style="color:#707070;width: 100%; margin:auto">
+                                    <img class="mx-3" src="{% static 'assets' %}/search-icon.svg" alt="plus icon"
+                                        width="15">
+                                    Search something by country or city
+                                </div>
+
+
+
+                                <div id="searchbox" ng-show="searchbox"
+                                    class="position-absolute cursor-pointer  p-3 bg-white"
+                                    style="width: 100%; margin:auto;left:0;right:0;top:0;border-radius:25px;z-index:11111111111111111">
+
+                                    <div
+                                        style="pointer-events: auto;  z-index: var(--overlays);right:0;top:0;position:fixed">
+
+                                    </div>
+
+                                    <div class="mb-2" style="color:#707070;">
+                                        <img class="mx-3" src="{% static 'assets' %}/search-icon.svg" alt="plus icon"
+                                            width="15">
+                                        <input style="border: none;width:80%;outline:none;"
+                                            ng-change="searchdestinations('exploresearch')" type="text"
+                                            name="searchfield" id="searchfield" ng-model="searchfield"
+                                            placeholder="Search something by country or city...">
+                                    </div>
+                                    <hr style="border:1px solid black;">
+                                    <div class="px-3 d-flex flex-column"
+                                        style="max-height: 300px; overflow:auto;gap:10px;">
+                                        <div id="loader3" class="d-flex justify-content-center d-none">
+                                            <div class="loader text-center">
+
+                                            </div>
+                                        </div>
+                                        <div class="d-flex align-items-center cursor-pointer"
+                                            ng-repeat="li in exploresearchlist"
+                                            ng-click="exploredestination(li.type,li.id)">
+                                            <img width="50" height="50" class="br_10" src="{{'{{ li.image }}'}}">
+                                            <div class="mx-2">
+                                                <p class="mb-1 fs_14 text-black">{{'{{ li.destination }}'}}</p>
+                                                <p class="m-0 fs_12" ng-if="li.type='city'" style="color:#707070;">{{'{{
+                                                    li.country }}'}} </p>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div style="padding-top: 150px;">
+
+                        </div>
+
+                        <div ng-if="!exploremode" style="padding-bottom:60px;">
+
+                            <div class=" mt-5">
+                                <div class="px-4">
+                                    <h2 class="fs_18 passion mb-2">
+                                        Popular Countries
+                                    </h2>
+
+
+                                    <div class="swiper mySwiper2 m-0">
+                                        <div class="swiper-wrapper">
+
+                                            {% for des in country_list%}
+                                            <div class="swiper-slide">
+
+
+                                                <div class="br_10 position-relative cursor-pointer"
+                                                    ng-click="exploredestination('country',{{ des.id }})">
+                                                    <img width="100%" class="br_10 position-relative" width="350"
+                                                        height="250" src="{{ des.image_url }}">
+                                                    <button
+                                                        class="btn mt-2 fs_14 text-white position-absolute fw_600 city-button">
+                                                        Explore
+                                                    </button>
+                                                </div>
+
+
+                                            </div>
+                                            {%endfor%}
+
+                                        </div>
+
+                                        <div class="swiper-pagination"></div>
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                            <div class=" mt-3">
+                                <div class="px-4">
+                                    <h2 class="fs_18 passion mb-2">
+                                        Popular Cities
+                                    </h2>
+
+                                    <div class="swiper mySwiper3 m-0">
+                                        <div class="swiper-wrapper">
+                                            {% for des in city_list %}
+                                            <div class="swiper-slide">
+
+                                                <div class="br_10 position-relative cursor-pointer"
+                                                    ng-click="exploredestination('city',{{ des.id }})">
+                                                    <img width="100%" class="br_10 position-relative" width="350"
+                                                        height="250" src="{{ des.filter_logo }}">
+                                                    <button
+                                                        class="btn mt-2 fs_14 text-white position-absolute fw_600 city-button">
+                                                        Explore
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                            {%endfor%}
+
+                                        </div>
+
+                                        <div class="swiper-pagination"></div>
+
+                                    </div>
+
+                                    <div class="passion mt-4">
+                                        <div id="page-numbers" class="justify-content-center page-numbers">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div ng-if="loader2" style="height: 50%;"
+                            class="d-flex flex-column align-items-center justify-content-center mt-5">
+                            <div class="loader text-center">
+
+                            </div>
+                        </div>
+                        <div class="" ng-if="exploremode && !loader2" style="padding-bottom:70px;">
+
+
+
+
+
+                            <div class="pt-3 px-4 pb-2 bg-black text-white">
+
+                                <div class="d-flex justify-content-center mb-2 cursor-pointer" ng-click="backhome()">
+                                    <svg xmlns="http://www.w3.org/2000/svg" y="0px" x="0px" viewBox="0,0,256,180"
+                                        width="30" height="30">
+                                        <g fill="#ffffff" fill-rule="nonzero" stroke="none" stroke-width="1"
+                                            stroke-linecap="butt" stroke-linejoin="miter" stroke-miterlimit="10"
+                                            stroke-dasharray="" stroke-dashoffset="0" font-family="none"
+                                            font-weight="none" font-size="none" text-anchor="none"
+                                            style="mix-blend-mode: normal">
+                                            <g transform="scale(10.66667,10.66667)">
+                                                <path
+                                                    d="M12,2c-0.26712,0.00003 -0.52312,0.10694 -0.71094,0.29688l-10.08594,8.80078c-0.12774,0.09426 -0.20313,0.24359 -0.20312,0.40234c0,0.27614 0.22386,0.5 0.5,0.5h2.5v8c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-6h4v6c0,0.552 0.448,1 1,1h4c0.552,0 1,-0.448 1,-1v-8h2.5c0.27614,0 0.5,-0.22386 0.5,-0.5c0.00001,-0.15876 -0.07538,-0.30808 -0.20312,-0.40234l-10.08008,-8.79492c-0.00194,-0.00196 -0.0039,-0.00391 -0.00586,-0.00586c-0.18782,-0.18994 -0.44382,-0.29684 -0.71094,-0.29687z">
+                                                </path>
+                                            </g>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <h1 class="fs_60px text-center">
+                                    {{'{{ exploredata.data[0].name }}'}}
+                                </h1>
+                                <p class="fs_18 figtree" style="text-align: justify;">
+                                    {{'{{ exploredata.data[0].introduction }}'}}
+                                </p>
+                            </div>
+
+                            <div class="px-4 mt-4" ng-if="exploredata.reels && exploredata.reels.length > 0">
+                                <h2 class="fs_24 passion mb-2">
+                                    Trending Reels
+                                </h2>
+                                <div class="swiper mySwiper5 m-0">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide" style="width:80%"
+                                            ng-repeat="reel in exploredata.reels" ng-init="initializeSwiper1()">
+                                            <div>
+                                                <div
+                                                    style="height: 250px;position: relative; border-bottom-left-radius:10px;  border-bottom-right-radius:10px">
+                                                    <img src="{% static 'uploads' %}/{{'{{ reel.thumbnail_image }}'}}"
+                                                        width="100%" height="250px">
+
+                                                    <div ng-click="showvideo(reel.id,reel.product_name,reel.video_url)"
+                                                        class="overlaay-play d-flex align-items-center justify-content-center"
+                                                        style="cursor:pointer;position: absolute;width: 100%;height: 90%;top: 0;">
+                                                        <img src="{% static 'assets' %}/play.png"
+                                                            style="height: 50px;filter: opacity(0.9);">
+                                                    </div>
+                                                </div>
+
+                                                <p class="mt-2 fs_14">
+                                                    {{'{{ reel.product_name }}'}}
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="swiper-pagination"></div>
+
+                                </div>
+                            </div>
+
+                            <div class="px-4 mt-4" ng-if="exploredata.cities && exploredata.cities.length > 0">
+                                <h2 class="fs_24 passion mb-2">
+                                    Popular Cities
+                                </h2>
+
+                                <div class="swiper mySwiper4 m-0">
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide" style="width:80%"
+                                            ng-repeat="cty in exploredata.cities" ng-init="initializeSwiper()">
+
+                                            <div class="br_10 position-relative cursor-pointer"
+                                                ng-click="exploredestination('city',cty.id)">
+                                                <img width="100%" class="br_10 position-relative" width="350"
+                                                    height="350" src="{{'{{ cty.filter_logo }}'}}">
+                                                <button
+                                                    class="btn mt-2 fs_14 text-white position-absolute fw_600 city-button">
+                                                    Explore
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="swiper-pagination"></div>
+
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="px-4 mt-4" ng-if="exploredata.tags && exploredata.tags.length > 0">
+                                <h2 class="fs_24 passion mb-3">
+                                    Your Ultimate Destination Guide: Tips, Tricks & Travel Gems
+                                </h2>
+                                <div class="" style="display: grid !important;
+                                        column-gap: 5px;
+                                        grid-template-columns: repeat(2, 1fr);
+                                        row-gap: 5px;">
+                                    <div class="figtree" ng-repeat="tag in exploredata.tags">
+                                        <div class=" section-not-bg p-3" style="height: 180px;">
+                                            <h4>
+                                                {{'{{tag.tag_cat_name}}'}}
+                                            </h4>
+                                            <p class="lineclamp3">
+                                                {{'{{tag.tag_name}}'}}
+                                            </p>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" file-model="file" />
+
+        </div>
+
+        <!-- image popup -->
+        <div class="modal fade mwebPositionedBottom " id="searchModal2" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel1" style="z-index: 11111111111;">
+            <div class="modal-dialog d-flex align-items-center p-3 br_10" role="document">
+                <div class="modal-content" style="width: 50%;
+                    margin-left: auto;
+                    margin-right: auto;
+                    height: auto;
+                    border-radius:20px;">
+
+                    <div class="modal-body" style="position:relative;width:100%">
+                        <div class="mb-3">
+                            <img ng-src="{{'{{modalImage}}'}}" width="100%" height="100%" style="object-fit: cover;">
+                        </div>
+
+
+
+                        <div ng-click="deleteImage()" class="br_10 fw_600 p-2 px-3 cursor-pointer"
+                            style="background-color: #E5855D;width: fit-content; float:right">
+                            Delete
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade mwebPositionedBottom " id="searchModal" tabindex="-1" role="dialog"
+            aria-labelledby="myModalLabel2" style="z-index: 11111111111;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content pop_up_lg" style="background-color: transparent;">
+                    <!-- <div style="padding-left: 1.5rem;z-index: 1;position: absolute;" class="modal-header py-3  flex-column  shadow-lg align-items-start" style="border-bottom: 0;padding-bottom: 0 !important;">
+                    <div class="d-flex align-items-center justify-content-start">
+                        <div style="margin-right: 10px;" onclick="closesearch()" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 10px;">
+                            <img width="24" src="<?= base_url() ?>assets/previous.png">
+                        </div>
+                        <p style="color: white;" class="m-0" id="modaltitle"> </p>
+                    </div>
+                </div> -->
+
+                    <div class="modal-body py-3"
+                        style="overflow: auto;background-color:transparent;position:relative;width:100%">
+                        <div class="p-4" style="z-index: 1;position: absolute;width:100%;top:0;left:0;right:0">
+                            <!-- <progress style="width: 100%;" id="progress" max="100" value="0">Progress</progress> -->
+                            <div class="d-flex align-items-center justify-content-start py-2">
+
+                                <div style="margin-right: 10px;" onclick="closesearch()" type="button" class="close"
+                                    data-dismiss="modal" aria-label="Close" style="margin-right: 10px;">
+                                    <img width="24" src="{% static 'assets' %}/previous.png">
+                                </div>
+                                <p style="color: white;" class="m-0" id="modaltitle"> </p>
+                            </div>
+                        </div>
+
+                        <video style="object-fit: cover;border-radius:10px;background:white;" src="" height="100%"
+                            width="100%" id="videopop" playsinline="">
+                        </video>
+                        <div id="play-overlay" class="p-4"
+                            style="cursor:pointer;position: absolute;width: 100%;height: 100%;top: 0;/*! top: 0; */left: 0;right: 0;">
+                        </div>
+                        <div id="viewdetails" class="p-3 m-3"
+                            style="overflow:auto;display:none;border-radius:10px;z-index:2;cursor:pointer;position: absolute;background-color:white;height: 50%;bottom: 0;left: 0;right: 0;">
+                            <div id="more_des" style="text-align: justify;"></div>
+                        </div>
+                        <div onclick="moredetails()" class="p-4 text-center"
+                            style="cursor:pointer;font-size:12px;color:white;z-index: 1;position: absolute;width:100%;bottom:0;left:0;right:0">
+                            <p class="m-0">View Details</p>
+                        </div>
+                        <!-- <video id="my-video" class="video-js" controls preload="auto" height="500" width="350" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+                        <source src="https://s3.ap-south-1.amazonaws.com/whatmore.instagram.import.dump/STRSE24S5IS/C6TaZw3N-f-.mp4" type="video/mp4" />
+                        <p class="vjs-no-js">
+                            To view this video please enable JavaScript, and consider upgrading to a
+                            web browser that
+                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                        </p>
+                    </video> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- <script type="text/javascript" src="resource/js/angular-dragdrop.min.js"></script>  -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<script>
+    setTimeout(() => {
+        var swiperx2 = new Swiper(".mySwiper2", {
+            autoplay: true,
+            slidesPerView: 2,
+            spaceBetween: 20,
+
+        });
+
+        var swiperx3 = new Swiper(".mySwiper3", {
+            autoplay: true,
+            slidesPerView: 2,
+            spaceBetween: 20,
+
+        });
+    }, 500);
+
+
+
+
+
+
+    var app = angular.module('tripApp', ['ui.bootstrap']);
+
+
+    app.directive('fileModel', ['$parse', function ($parse) {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                var model = $parse(attrs.fileModel);
+                var modelSetter = model.assign;
+
+                // Bind the file input change event to the model
+                element.bind('change', function () {
+                    scope.$apply(function () {
+                        modelSetter(scope, element[0].files[0]);
+                    });
+                    // Manually call uploadImage when file is selected
+                    scope.uploadImage(element[0].files[0]);
+
+                });
+            }
+        };
+    }]);
+
+
+    app.controller('tripController', function ($scope, $http, $sce) {
+
+        $scope.selectedDate = new Date();
+        $scope.format = 'dd-MM-yyyy';
+        $scope.showButtonBar = false
+        $scope.dateOptions = {
+            minDate: new Date(),
+            startingDay: 1,
+            showWeeks: false,
+            showMeridian: true
+        };
+
+        $scope.$watch('selectedDate', function (newValue) {
+            if (newValue) {
+                let formattedDate = newValue.toISOString().split('T')[0]; // Format as yyyy-MM-dd
+                $scope.triplist[0].calendar.date = formattedDate;
+            }
+        });
+
+        $scope.popup = {
+            opened: false
+        };
+
+        $scope.openDatepicker = function () {
+            $scope.popup.opened = true;
+        };
+
+
+        $scope.uploadimage = function (file) {
+            console.log('File to upload:', file);
+            // Your file handling logic here
+        };
+
+        $scope.myInterval = 3000;
+
+        $scope.title = '{{ trip.trip_name }}'
+        $scope.start_from = ""
+        $scope.country_to = ""
+        $scope.searchlist = []
+        $scope.fromsearchbox = false
+        $scope.tosearchbox = false
+        $scope.countryselection = false
+        $scope.countrycities = []
+        $scope.loader = false
+        $scope.countryselectlist = []
+        $scope.searchbox = false
+        $scope.exploremode = false
+        $scope.loader2 = false
+        $scope.addlinklist = [""]
+        $scope.addnoteslist = [""]
+        $scope.hotelslist = []
+        $scope.sidemenumode = false;
+
+        var countrycity = {
+            "city": "",
+            "id": "",
+            "days": 5,
+            "code": ""
+        }
+
+
+        $scope.toggleMenu = function () {
+            $scope.sidemenumode = !$scope.sidemenumode; // Toggle value
+        };
+
+        $scope.sampleobj = {
+            "destinationa": {
+                "value": "",
+                "id": 0,
+                "code": "",
+                "image": ""
+            },
+            "calendar": {
+                "date": "",
+                "year": 0,
+                "month": 0,
+                "day": 0
+            },
+
+            // {
+            //     "hotels": {
+            //         "list": []
+            //     },
+            //     "ttds": {
+            //         "list": []
+            //     },
+            //     "flights": {
+            //         "list": []
+            //     },
+            //     "images": [],
+            //     "links": [],
+            //     "notes": []
+            // }
+
+
+            "days": [{
+                "items": []
+            }],
+            "destinationb": {
+                "value": "",
+                "id": 0,
+                "code": "",
+                "image": ""
+            },
+        };
+
+
+
+        $scope.addday = function (dayaddindex) {
+            var dayobj = {
+                "items": []
+                // "hotels": {
+                //     "list": []
+                // },
+                // "ttds": {
+                //     "list": []
+                // },
+                // "flights": {
+                //     "list": []
+                // },
+                // "images": [],
+                // "links": [],
+                // "notes": []
+            };
+            $scope.$applyAsync(function () {
+                $scope.triplist[dayaddindex].days.push(JSON.parse(JSON.stringify(dayobj)))
+
+            })
+        }
+
+        $scope.removeday = function (parent, dayindex) {
+            $scope.$applyAsync(function () {
+                $scope.triplist[parent].days.splice(dayindex, 1);
+            })
+
+            $scope.save_trip();
+        }
+
+        // $scope.triplist = JSON.parse(JSON.stringify());
+        $scope.triplist = JSON.parse(JSON.stringify({{ trip.data )}});
+    $scope.exploresearchlist = []
+
+    if ($scope.triplist.length == 0) {
+        $scope.triplist.push(JSON.parse(JSON.stringify($scope.sampleobj)));
+
+    } else {
+        if ($scope.triplist[0].calendar.date != "") {
+            $scope.selectedDate = new Date($scope.triplist[0].calendar.date)
+        }
+    }
+
+    $scope.$applyAsync(function () {
+        $scope.activeIndex = $scope.triplist.length - 1
+    })
+
+    $scope.country_to_id = 0
+    $scope.searchdestinations = function (type) {
+
+        if (type == "country") {
+            $scope.countryselectlist = []
+            $http({
+                method: 'POST',
+                url: '<?= base_url() ?>searchdestinations',
+                data: JSON.stringify({
+                    "type": type,
+                    "search_key": $scope.city_to,
+                    "country_id": $scope.country_to_id
+                })
+            }).then(function (response) {
+                $scope.$applyAsync(function () {
+                    $scope.countryselectlist = response.data.list;
+                    $scope.cityselectbox = true
+
+
+                });
+
+            }, function (error) {
+                console.error("Error fetching OG params: ", error);
+            });
+        } else if (type == "exploresearch") {
+
+            if ($("#searchfield").val().length > 2) {
+                var json = {
+                    "type": "destination",
+                    "search_key": $("#searchfield").val(),
+                }
+                $scope.exploresearchlist = []
+                $("#loader3").removeClass("d-none");
+
+
+                $.ajax({
+                    url: "{{ request.scheme }}://{{ request.get_host }}/searchdestinations",
+                    type: 'post',
+                    dataType: 'json',
+                    data: JSON.stringify(json)
+                }).done(function (res) {
+                    // var response = JSON.parse(res);
+                    $scope.$applyAsync(function () {
+                        $("#searchlist").html("");
+                        var list = res.list;
+                        $scope.exploresearchlist = list
+
+                        $scope.searchbox = true;
+                        $("#searchbox").removeClass("d-none");
+                        $("#loader3").addClass("d-none");
+
+                        $("#backdrop").removeClass("d-none");
+                    });
+                });
+            }
+        } else {
+
+            $scope.searchlist = []
+            $http({
+                method: 'POST',
+                url: '{{ request.scheme }}://{{ request.get_host }}/searchdestinations',
+                data: JSON.stringify({
+                    "type": type,
+                    "search_key": type == "from" ? $scope.start_from : $scope.start_to,
+
+                })
+            }).then(function (response) {
+                $scope.$applyAsync(function () {
+                    $scope.searchlist = response.data.list;
+                    if (type == "from") {
+                        $scope.fromsearchbox = true
+                    } else {
+                        $scope.tosearchbox = true
+                    }
+
+                });
+
+            }, function (error) {
+                console.error("Error fetching OG params: ", error);
+            });
+
+        }
+
+    }
+
+    $scope.activeIndex = null;
+    $scope.toggle = function (index) {
+        $scope.activeIndex = $scope.activeIndex === index ? null : index;
+    };
+
+    $scope.pushcities = function (data) {
+        $scope.$applyAsync(function () {
+
+            $scope.triplist.push(JSON.parse(JSON.stringify($scope.sampleobj)));
+
+            $scope.triplist[$scope.triplist.length - 2].destinationb.value = data.destination
+            $scope.triplist[$scope.triplist.length - 2].destinationb.image = data.image
+            $scope.triplist[$scope.triplist.length - 2].destinationb.id = data.id
+            $scope.triplist[$scope.triplist.length - 2].destinationb.code = data.code
+
+
+            $scope.triplist[$scope.triplist.length - 1].destinationa.value = data.destination
+            $scope.triplist[$scope.triplist.length - 1].destinationa.image = data.image
+            $scope.triplist[$scope.triplist.length - 1].destinationa.id = data.id
+            $scope.triplist[$scope.triplist.length - 1].destinationa.code = data.code
+
+            $scope.activeIndex = $scope.triplist.length - 1
+
+        })
+    }
+
+    $scope.removedestination = function (desindex) {
+        $scope.$applyAsync(function () {
+            if (desindex > 0) {
+                if (desindex < $scope.triplist.length - 1) {
+                    $scope.triplist[desindex - 1].destinationb = JSON.parse(JSON.stringify($scope.triplist[desindex + 1].destinationa))
+
+                } else {
+                    $scope.triplist[desindex - 1].destinationb.value = ""
+                    $scope.triplist[desindex - 1].destinationb.image = ""
+                    $scope.triplist[desindex - 1].destinationb.id = ""
+                    $scope.triplist[desindex - 1].destinationb.code = ""
+                }
+            }
+            $scope.triplist.splice(desindex, 1);
+        });
+    }
+
+    $scope.selectdestination = function (type, index) {
+
+        if (type == "from") {
+
+            $scope.triplist[0].destinationa.value = $scope.searchlist[0].destination
+            $scope.triplist[0].destinationa.image = $scope.searchlist[0].image
+            $scope.triplist[0].destinationa.id = $scope.searchlist[0].id
+            $scope.triplist[0].destinationa.code = $scope.searchlist[0].code
+            $scope.triplist[0].destinationa.show = true
+
+        } else if (type == "countryselect") {
+            $scope.countrycities.push($scope.countryselectlist[index])
+            $scope.countryselectlist = []
+            $scope.cityselectbox = true
+        } else {
+
+            if ($scope.searchlist[index].type == "city") {
+                $scope.pushcities($scope.searchlist[index])
+
+            } else {
+
+                $scope.country_to = $scope.searchlist[index].destination
+                $scope.country_to_id = $scope.searchlist[index].id
+
+
+                // $scope.countrycities.push(JSON.parse(JSON.stringify(countrycity)))
+                $scope.countryselection = true
+                $scope.loader = true;
+                $scope.recommendedcities = []
+
+                $http({
+                    method: 'POST',
+                    url: '{{ request.scheme }}://{{ request.get_host }}/searchdestinations',
+                    data: JSON.stringify({
+                        "type": "country_to",
+                        "search_key": $scope.searchlist[index].id,
+
+                    })
+                }).then(function (response) {
+                    $scope.$applyAsync(function () {
+                        $scope.recommendedcities = response.data.list;
+
+                        $scope.loader = false;
+
+                    });
+
+                }, function (error) {
+                    console.error("Error fetching OG params: ", error);
+                });
+
+
+            }
+
+
+        }
+
+        $scope.searchlist = []
+        $scope.start_from = ""
+        $scope.start_to = ""
+        $scope.fromsearchbox = false
+        $scope.tosearchbox = false
+
+    }
+
+    $scope.closesearch = function () {
+        $("#searchModal").modal("hide");
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+    }
+
+    $scope.searchforcity = function () {
+        $scope.searchbox = true
+        $("#backdrop").removeClass("d-none");
+
+        $("#searchfield").focus()
+    }
+
+    $scope.closebox = function () {
+        $("#searchlist").html("");
+        $scope.searchbox = false
+        $scope.exploresearchlist = []
+        // $("#searchbox").addClass("d-none");
+        $("#backdrop").addClass("d-none");
+        $("#loader3").addClass("d-none");
+        $("#searchfield").val("")
+    }
+
+    $scope.selectcity = function (index) {
+
+        var countrycity = {
+            "city": "",
+            "id": "",
+            "days": 5,
+            "code": ""
+        }
+
+        // countrycity.city = $scope.recommendedcities[index].destination
+        // countrycity.id = $scope.recommendedcities[index].id
+        // countrycity.code = $scope.recommendedcities[index].code
+        $scope.countrycities.push($scope.recommendedcities[index])
+
+        // $scope.pushcities($scope.recommendedcities[index])
+
+        $scope.recommendedcities.splice(index, 1);
+        // $scope.countrycities.push(JSON.parse(JSON.stringify(countrycity)))
+
+    }
+
+    $scope.proceedselection = function () {
+
+
+        $scope.countryselection = false
+
+        $scope.countrycities.forEach(element => {
+            $scope.pushcities(element)
+        });
+
+        $scope.countrycities = []
+    }
+
+
+    $scope.initializeSwiper = function () {
+        setTimeout(() => {
+            new Swiper(".mySwiper4", {
+                loop: true,
+                // autoplay: true,
+                slidesPerView: "auto",
+                spaceBetween: 30,
+                // slidesPerView: 1,
+                // spaceBetween: 50
+            });
+
+        }, 2000);
+    };
+
+    $scope.initializeSwiper1 = function () {
+        setTimeout(() => {
+            new Swiper(".mySwiper5", {
+                loop: true,
+                // autoplay: true,
+                slidesPerView: "auto",
+                spaceBetween: 30,
+                // centeredSlides: true,
+            });
+
+        }, 1000);
+    };
+
+    $scope.backhome = function () {
+        $scope.exploremode = false
+    }
+
+    $scope.exploredestination = function (type, id) {
+        $scope.closebox()
+        $("#explorediv").scroll(0, 0)
+        $scope.loader2 = true
+        $scope.exploremode = true
+        $scope.exploredata = {}
+        $http({
+            method: 'POST',
+            url: '<?= base_url() ?>searchdestinations',
+            data: JSON.stringify({
+                "type": "explore" + type,
+                "search_key": id,
+
+            })
+        }).then(function (response) {
+            $scope.$applyAsync(function () {
+                $scope.exploredata = response.data.data;
+                // $scope.exploremode = true
+                $scope.loader2 = false;
+            });
+
+
+        }, function (error) {
+            console.error("Error fetching OG params: ", error);
+        });
+    }
+
+    var showtitle = "";
+    var videoslist = [];
+    var start = 0;
+
+    $scope.showvideo = function (id, name, url) {
+        $.ajax({
+            url: "<?= base_url() ?>/getvideos",
+            type: 'post',
+            dataType: 'json',
+            data: {
+                searchkey: id
+            }
+        }).done(function (res) {
+            showtitle = res.product_name;
+            videoslist = res.videos;
+            start = 0;
+            $("#modaltitle").html("");
+            $("#modaltitle").html(showtitle);
+            $("#videopop").attr("src", videoslist[start].video_url);
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        });
+        videoplay()
+    }
+
+    // day wise add ons code
+
+
+    $scope.isValidUrl = function (url) {
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // Protocol
+            '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.([a-z]{2,}|[a-z\\d]{2,}))|' + // Domain name
+            '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR IP (v4) address
+            '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // Port and path
+            '(\\?[;&a-z\\d%_.~+=-]*)?' + // Query string
+            '(\\#[-a-z\\d_]*)?$', 'i'); // Fragment locator
+        return pattern.test(url);
+    };
+
+    $scope.addlinks = function (parentindex, dayindex) {
+        $scope.parentindex = parentindex;
+        $scope.dayindex = dayindex;
+        $scope.sidemenumode = true;
+        $scope.tab = "links"
+    }
+
+    $scope.removelinks = function (parentindex, dayindex, childindex) {
+        $scope.$applyAsync(function () {
+            $scope.triplist[parentindex].days[dayindex].links.splice(childindex, 1);
+            // $scope.save_trip();
+        })
+    }
+
+    // Function to extract OG parameters by calling the PHP backend
+    $scope.getOgParams = function () {
+        var urls = $scope.addlinklist;
+        var errorflag = false
+
+        $scope.linkloader = true
+        urls.forEach(element => {
+            if (element.length > 0 && $scope.isValidUrl(element) || true) {
+                // Call the PHP backend to fetch and parse OG metadata
+                $http({
+                    method: 'POST',
+                    url: '{{ request.scheme }}://{{ request.get_host }}/api/getOgMeta',
+                    data: {
+                        url: element
+                    }
+                }).then(function (response) {
+                    // Process the returned OG metadata
+                    var ogarams = response.data;
+
+                    if ($scope.urltype == "flights") {
+                        $scope.$applyAsync(function () {
+                            if (!$scope.triplist[$scope.parentindex].links) {
+                                $scope.triplist[$scope.parentindex].links = [];
+                            }
+
+                            $scope.triplist[$scope.parentindex].links.push(ogarams);
+                            $scope.save_trip();
+
+                        })
+                    } else {
+                        $scope.$applyAsync(function () {
+                            if (!$scope.triplist[$scope.parentindex].days[$scope.dayindex].links) {
+                                $scope.triplist[$scope.parentindex].days[$scope.dayindex].links = [];
+                            }
+                            $scope.sidemenumode = false
+                            $scope.linkloader = false
+                            ogarams.type = "link"
+
+                            $scope.triplist[$scope.parentindex].days[$scope.dayindex].items.push(ogarams);
+                        })
+                    }
+
+
+
+                }, function (error) {
+                    errorflag = true;
+                });
+            } else {
+                errorflag = true;
+            }
+        });
+
+        $scope.addlinklist = [];
+
+    };
+
+    //notes add
+
+
+    $scope.addnotes = function (parentindex, dayindex) {
+        $scope.dayindex = dayindex;
+        $scope.parentindex = parentindex;
+
+        $scope.sidemenumode = true;
+        $scope.tab = "notes"
+    }
+
+    $scope.removenotes = function (parentindex, dayindex, childindex) {
+        $scope.$applyAsync(function () {
+            $scope.triplist[parentindex].days[dayindex].notes.splice(childindex, 1);
+            // $scope.save_trip();
+        })
+    }
+
+    $scope.savenotes = function () {
+
+        $scope.$applyAsync(function () {
+            $scope.addnoteslist.forEach(element => {
+                if (element.length > 0) {
+                    $scope.triplist[$scope.parentindex].days[$scope.dayindex].items.push({
+                        "type": "note",
+                        "note": element
+                    })
+                }
+            })
+
+            $scope.sidemenumode = false
+            $scope.addnoteslist = [""]
+        })
+    }
+
+    //image upload
+    $scope.fileupload = function (index, dayindex) {
+        $scope.uploaddayindex = dayindex;
+        $scope.uploadindex = index;
+        document.getElementById('fileInput').click();
+    }
+
+    $scope.showImage = function (parent, index, imageindex = null) {
+        $scope.modalImage = "{{ request.scheme }}://{{ request.get_host }}/uploads/trips/{{ trip.trip_id }}/" + $scope.triplist[parent].days[index].items[imageindex]
+
+        $scope.delImage = [parent, index, imageindex]
+
+        $("#searchModal2").modal("show")
+
+    }
+
+    $scope.deleteImage = function () {
+        $scope.removeimage($scope.delImage[0], $scope.delImage[1], $scope.delImage[2]);
+        $("#searchModal2").modal("hide")
+    }
+
+    $scope.removeimage = function (parent, index, imageindex = null) {
+
+        var json = {}
+        if (imageindex != null) {
+            json = {
+                "id": "{{ trip.trip_id }}",
+                "image": $scope.triplist[parent].days[index].images[imageindex]
+            }
+
+            $scope.$applyAsync(function () {
+                $scope.triplist[parent].days[index].images.splice(imageindex, 1);
+                $scope.modalImage = ""
+                $scope.delImage = []
+            })
+
+        } else {
+            json = {
+                "id": "{{ trip.trip_id }}",
+                "image": $scope.triplist[parent].images[index]
+            }
+
+            $scope.$applyAsync(function () {
+                $scope.triplist[parent].images.splice(index, 1);
+                $scope.modalImage = ""
+                $scope.delImage = []
+            })
+        }
+
+        $.ajax({
+            url: "{{ request.scheme }}://{{ request.get_host }}/trips/deleteimage",
+            method: "POST",
+            contentType: 'application/json',
+            data: angular.toJson(json)
+        }).done(function (res) {
+            $scope.save_trip();
+        });
+    }
+
+    $scope.uploadImage = function (file) {
+        if (file && file.type.match('image.*')) {
+            var formData = new FormData();
+            formData.append('file', file);
+            formData.append('id', "{{ trip.trip_id }}");
+
+            // Send the image to the server using POST request
+            $http.post('{{ request.scheme }}://{{ request.get_host }}/trips/upload', formData, {
+                headers: {
+                    'Content-Type': undefined
+                },
+
+                transformRequest: angular.identity
+            }).then(function (response) {
+
+                var url = response.data.url;
+
+                var obj = {
+                    "images": [url],
+                    "type": "image"
+                }
+
+                if ($scope.uploadtype == "flights") {
+                    if (!$scope.triplist[$scope.uploadindex].images) {
+                        $scope.triplist[$scope.uploadindex].images = [];
+                    }
+
+                    $scope.triplist[$scope.uploadindex].images.push(url);
+                } else {
+                    $scope.$applyAsync(function () {
+                        var index = $scope.triplist[$scope.uploadindex].days[$scope.uploaddayindex].items.findIndex(childItem => childItem.type == "image")
+                        if (index > 0) {
+                            $scope.triplist[$scope.uploadindex].days[$scope.uploaddayindex].items[index].images.push(url);
+                        } else {
+                            $scope.triplist[$scope.uploadindex].days[$scope.uploaddayindex].items.push(obj);
+                        }
+
+                        // if (!$scope.triplist[$scope.uploadindex].days[$scope.uploaddayindex].intlcal_get_error_message) {
+                        //     $scope.triplist[$scope.uploadindex].days[$scope.uploaddayindex].images = [];
+                        // }
+
+                    });
+                }
+
+            }, function (error) {
+                console.error('Image upload failed:');
+            });
+        } else {
+            alert('Please select a valid image file.');
+        }
+    };
+
+    // image upload end
+
+
+    //add hotels
+
+    $scope.tab = ""
+
+    $scope.removehotels = function (parentindex, dayindex, childindex) {
+        $scope.$applyAsync(function () {
+            $scope.triplist[parentindex].days[dayindex].hotels.list.splice(childindex, 1);
+            // $scope.save_trip();
+        })
+    }
+
+    $scope.addhotel = function (parentindex, dayindex) {
+
+        var internaldaycount = dayindex + 1
+        var totalcount = 0
+        if (parentindex == 0) {
+            for (let i = 0; i < parentindex; i++) {
+                totalcount += $scope.triplist[parentindex].days.length
+            }
+        }
+
+        totalcount += internaldaycount
+
+        let newDate = new Date($scope.selectedDate);
+        newDate.setDate(newDate.getDate() + totalcount);
+
+        let yyyy = newDate.getFullYear();
+        let mm = String(newDate.getMonth() + 1).padStart(2, '0');
+        let dd = String(newDate.getDate()).padStart(2, '0');
+
+        newDate = `${yyyy}-${mm}-${dd}`;
+
+        var json = {
+            "toplace": $scope.triplist[parentindex].destinationa.value,
+            "date": newDate
+        }
+        $scope.hotelslist = []
+
+
+        $scope.hotelinfo = {};
+        $scope.parentindex = parentindex;
+        $scope.dayindex = dayindex;
+        $scope.hotelinfo.loader = true;
+        $scope.tab = "hotel"
+        $scope.sidemenumode = true
+
+        $.ajax({
+            url: "{{ request.scheme }}://{{ request.get_host }}/gethotelsdata2",
+            method: "POST",
+            contentType: 'application/json',
+            data: angular.toJson(json)
+        }).done(function (res) {
+            $scope.$applyAsync(function () {
+                if (res.error) {
+                    $scope.hotelinfo.loader = false;
+                    $scope.hotelinfo.error = true;
+                } else {
+                    var response = JSON.parse(res);
+                    if (response.list.length == 0) {
+                        $scope.hotelinfo.loader = false;
+                        $scope.hotelinfo.nodata = true;
+                    } else {
+
+                        $scope.$applyAsync(function () {
+
+                            $scope.hotelslist = response.list.filter(item => !$scope.triplist[parentindex].days[dayindex].items.some(childItem => childItem.type == "hotel" && childItem.id === item.id));
+                            if ($scope.hotelslist.length == 0) {
+                                $scope.hotelinfo.loader = false;
+                                $scope.hotelinfo.nodata = true;
+                            }
+                        })
+
+                    }
+                }
+            });
+
+        });
+    }
+
+    $scope.selecthotels = function (index) {
+        var obj = $scope.hotelslist[index];
+        var schindex = $scope.parentindex;
+        var dayindex = $scope.dayindex;
+
+        obj.type = "hotel";
+
+        $scope.$applyAsync(function () {
+            // $scope.triplist[schindex].days[dayindex].hotels.show = true;
+            $scope.triplist[schindex].days[dayindex].items.push(JSON.parse(JSON.stringify(obj)));
+        })
+
+        $scope.hotelslist.splice(index, 1);
+
+    }
+
+    // add hotel end
+
+    // ttd add
+
+    $scope.ttdinfo = {};
+    $scope.ttdlist = [];
+    $scope.parentindex = -1;
+    $scope.dayindex = -1;
+
+    $scope.removettds = function (parentindex, dayindex, childindex) {
+        $scope.$applyAsync(function () {
+            $scope.triplist[parentindex].days[dayindex].ttds.list.splice(childindex, 1);
+            // $scope.save_trip();
+        })
+    }
+
+    $scope.addactivity = function (addindex, dayindex = null) {
+        $scope.ttdlist = [];
+
+        $scope.parentindex = addindex;
+        $scope.dayindex = dayindex;
+
+        $scope.sidemenumode = true;
+        $scope.ttdtab = true;
+        $scope.tab = "ttd";
+        $scope.ttdinfo.loader = true;
+
+        var json = {
+            "to": $scope.triplist[addindex].destinationa.value,
+        }
+
+        $.ajax({
+            url: "{{ request.scheme }}://{{ request.get_host }}/gettododata",
+            method: "POST",
+            contentType: 'application/json',
+            data: angular.toJson(json)
+        }).done(function (res) {
+            $scope.$applyAsync(function () {
+                if (res.error) {
+                    $scope.ttdinfo.loader = false;
+                    $scope.ttdinfo.error = true;
+                } else {
+                    var response = JSON.parse(res);
+                    if (response.list.length == 0) {
+                        $scope.ttdinfo.loader = false;
+                        $scope.ttdinfo.nodata = true;
+                    } else {
+
+                        // $scope.ttdlist = response.list;
+                        // var schindex = $scope.searchindex;
+                        $scope.$applyAsync(function () {
+
+                            $scope.ttdlist = response.list.filter(item => !$scope.triplist[addindex].days[dayindex].items.some(childItem => childItem.type == "ttd" && childItem.id === item.id));
+
+                            if ($scope.ttdlist.length == 0) {
+                                $scope.ttdinfo.loader = false;
+                                $scope.ttdinfo.nodata = true;
+                            }
+                        })
+                    }
+
+                }
+            });
+
+        });
+
+
+    }
+
+    $scope.selectttd = function (index) {
+        var obj = $scope.ttdlist[index];
+        obj.type = "ttd";
+        var schindex = $scope.parentindex;
+        var dayindex = $scope.dayindex;
+
+        $scope.$applyAsync(function () {
+            $scope.triplist[schindex].days[dayindex].items.push(JSON.parse(JSON.stringify(obj)));
+            $scope.ttdlist.splice(index, 1);
+
+        })
+    }
+
+
+    $scope.save_trip = function () {
+
+        var tripdata = {
+            "id": "{{ trip.trip_id }}",
+            "title": $scope.title,
+            "status": $scope.triplist[0].status,
+            "data": $scope.triplist
+        }
+        $("#save_trip").hide();
+
+        $.ajax({
+            url: "{{ request.scheme }}://{{ request.get_host }}/savetrip",
+            method: "POST",
+            contentType: 'application/json',
+            data: angular.toJson(tripdata)
+        }).done(function (res) {
+
+            var response = JSON.parse(res);
+            if (response.msg == "success") {
+                // alert("successfully saved");
+                $scope.$applyAsync(function () {
+                    $scope.saveddata = JSON.parse(angular.toJson(($scope.triplist)));
+                })
+
+                // $("#saved_trip").show();
+                // $scope.comparesaved();
+                alert("Successfully Saved!!")
+
+            } else {
+                alert("Something went wrong while saving!!")
+            }
+
+        });
+    }
+
+    $scope.status = $scope.triplist[0].status == 1 ? true : false
+
+    $scope.updatestatus = function () {
+        if ($scope.status === true) {
+            $scope.triplist[0].status = 1;
+        } else {
+            $scope.triplist[0].status = 0;
+        }
+        // $scope.comparesaved()
+    };
+
+
+
+
+    // drag and drop
+    $scope.MoveItem = function (parentIndex, origin, dest, item_id, newIndex) {
+
+
+
+        let originList = JSON.parse(JSON.stringify($scope.triplist[parentIndex].days[origin].items));
+        let destList = JSON.parse(JSON.stringify($scope.triplist[parentIndex].days[dest].items));
+
+        let itemIndex = parseInt(item_id);
+
+        if (itemIndex === -1) return;
+
+        let item = originList.splice(itemIndex, 1)[0];
+
+        // Remove item
+        // $scope.triplist[origin].days[origin].items.splice(itemIndex, 1)[0];
+
+        // If moved within the same list, reorder
+        if (origin === dest) {
+            originList.splice(newIndex, 0, item);
+            $scope.triplist[parentIndex].days[origin].items = originList;
+            // $scope.triplist[parentIndex].days[origin].items.splice(newIndex, 0, item);
+        } else {
+            destList.push(item);
+            $scope.triplist[parentIndex].days[origin].items = originList;
+            $scope.triplist[parentIndex].days[dest].items = destList;
+            // $scope.triplist[parentIndex].days[dest].items.push(item)
+        }
+        $scope.$apply();
+    }
+    })
+
+    let draggedItem = null;
+    let draggedOrigin = null;
+    let draggedIndex = null;
+
+    app.directive('draggable', function () {
+        return function (scope, element, attrs) {
+            // Get the native element
+            var el = element[0];
+            el.draggable = true; // Make dragable
+
+            // Add event listeners
+            el.addEventListener('dragstart', function (e) {
+                e.dataTransfer.effectAllowed = 'move';
+                // e.dataTransfer.setData('item_id', this.id);
+                // e.dataTransfer.setData('origin_id', this.parentElement.id);
+                // e.dataTransfer.setData('index', this.parentElement.getAttribute('data-index'));
+
+                draggedItem = this.id;
+                draggedOrigin = this.parentElement.id;
+                draggedIndex = this.parentElement.getAttribute('data-index');
+
+
+
+                // // // 🔥 Convert div to image
+                // // let clone = this.cloneNode(true);
+                // // clone.style.position = "absolute";
+                // // clone.style.transform = "scale(1)"; // Ensure correct size
+                // // clone.style.left = "-9999px"; // Hide it off-screen
+                // // document.body.appendChild(clone);
+
+                // // html2canvas(clone, {
+                // //     backgroundColor: null
+                // // }).then(canvas => {
+                // //     let img = new Image();
+                // //     img.src = canvas.toDataURL(); // Convert canvas to image
+                // //     document.body.appendChild(img);
+                // //     e.dataTransfer.setDragImage(img, 0, 0);
+
+                // //     // Clean up
+                // //     setTimeout(() => {
+                // //         clone.remove();
+                // //         img.remove();
+                // //     }, 0);
+                // // });
+
+                // e.dataTransfer.setDragImage(this, 0, 0);
+
+
+                this.classList.add('dragging');
+            });
+
+
+            el.addEventListener(
+                'dragend',
+                function (e) {
+                    this.classList.remove('dragging');
+                    return false;
+                },
+                false
+            );
+        }
+    });
+
+    app.directive('droppable', function () {
+        return function (scope, element, attrs) {
+            // Get the native element
+            var el = element[0];
+
+            // Add event listeners
+            el.addEventListener(
+                'dragover',
+                function (e) {
+                    e.preventDefault(); // Allow the drop
+
+                    // Set effects
+                    e.dataTransfer.dropEffect = 'move';
+                    this.classList.add('dragover');
+                    return false;
+                }, false
+            );
+
+            el.addEventListener(
+                'dragenter',
+                function (e) {
+                    this.classList.add('dragover');
+                    return false;
+                }, false
+            );
+
+            el.addEventListener(
+                'dragleave',
+                function (e) {
+                    this.classList.remove('dragover');
+                    return false;
+                }, false
+            );
+
+            el.addEventListener(
+                'drop',
+                function (e) {
+                    this.classList.remove('dragover');
+
+                    var destination = this.id;
+                    // var item_id = e.dataTransfer.getData('item_id');
+                    // var origin = e.dataTransfer.getData('origin_id');
+                    // var parentIndex = e.dataTransfer.getData('index');
+
+                    var item_id = draggedItem;
+                    var origin = draggedOrigin;
+                    var parentIndex = draggedIndex;
+
+
+
+                    // var dropIndex = Array.from(this.children).indexOf(e.target);
+                    var dropTarget = e.target.closest('.list-item'); // Find closest draggable item
+                    var dropIndex = dropTarget ? Array.from(this.children).indexOf(dropTarget) : this.children.length;
+
+                    // Find the closest droppable item
+                    // var dropTarget = e.target.closest('.list-item');
+                    // var dropIndex;
+
+                    // if (dropTarget) {
+                    //     console.log("1")
+                    //     dropIndex = Array.from(this.children).indexOf(dropTarget);
+                    // } else {
+                    //     console.log("2")
+                    //     dropIndex = this.children.length; // Append to the end if no valid target
+                    // }
+
+
+
+                    if (dropIndex === -1) {
+                        dropIndex = scope.triplist[destination].days.length;
+                    }
+
+                    scope.MoveItem(parentIndex, origin, destination, item_id, dropIndex);
+                    return false;
+                }, false
+            );
+        }
+    });
+
+
+    function closesearch() {
+        $("#searchModal").modal("hide");
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+    }
+
+    function searchforcity() {
+        $("#searchbox").removeClass("d-none");
+        $("#backdrop").removeClass("d-none");
+
+        $("#searchfield").focus()
+    }
+
+    function closebox() {
+        $("#searchlist").html("");
+        $("#searchbox").addClass("d-none");
+        $("#backdrop").addClass("d-none");
+        $("#loader3").addClass("d-none");
+        $("#searchfield").val()
+    }
+
+    function transformString(string) {
+        string = string.trim().replace(/ /g, '-');
+        string = string.replace(/[^A-Za-z0-9\-]/g, '');
+        string = string.replace(/\s+-\s*|\s*-\s+/g, '-');
+        return string.replace(/-+/g, '-');
+    }
+</script>
+
+<script>
+    var showtitle = "";
+    var videoslist = [];
+    var start = 0;
+    var morestatus = false // closed
+
+    $("#play-overlay").on('mouseup', function (e) {
+        document.getElementById('videopop').play();
+
+        // touchendX = e.changedTouches[0].screenX
+
+        // if (touchendX > touchstartX) {
+        //     start--;
+        //     videoplay();
+        // } else {
+        //     start++;
+        //     videoplay();
+        // }
+
+        if (morestatus) {
+            $("#viewdetails").hide();
+            morestatus = false
+        }
+    });
+
+    $("#play-overlay").on('touchend', function (e) {
+        document.getElementById('videopop').play();
+
+        // touchendX = e.changedTouches[0].screenX
+
+        // if (touchendX > touchstartX) {
+        //     start--;
+        //     videoplay();
+        // } else {
+        //     start++;
+        //     videoplay();
+        // }
+
+        if (morestatus) {
+            $("#viewdetails").hide();
+            morestatus = false
+        }
+
+    });
+
+    $("#play-overlay").on('mousedown', function (e) {
+        document.getElementById('videopop').pause();
+        touchstartX = e.changedTouches[0].screenX
+    });
+
+    $("#play-overlay").on('touchstart', function (e) {
+        document.getElementById('videopop').pause();
+        touchstartX = e.changedTouches[0].screenX
+    });
+
+
+    function showvideo(id, name, url) {
+        $.ajax({
+            url: "<?= base_url() ?>/getvideos",
+            type: 'post',
+            dataType: 'json',
+            data: {
+                searchkey: id
+            }
+        }).done(function (res) {
+            showtitle = res.product_name;
+            videoslist = res.videos;
+            start = 0;
+            $("#modaltitle").html("");
+            $("#modaltitle").html(showtitle);
+            $("#videopop").attr("src", videoslist[start].video_url);
+            $("#more_des").html(videoslist[start].description)
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        });
+        videoplay()
+    }
+
+
+    function moredetails() {
+        morestatus = true
+        document.getElementById('videopop').pause();
+        $("#viewdetails").show();
+
+    }
+
+    function videoplay() {
+
+        if (videoslist.length > 1 && (start >= 0 && start < videoslist.length)) {
+            $("#videopop").attr("src", "");
+            $("#videopop").attr("src", videoslist[start].video_url);
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        }
+
+        $("#searchModal").modal("show");
+    }
+</script>

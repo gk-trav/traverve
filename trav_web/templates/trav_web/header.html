@@ -1,0 +1,53 @@
+{% load static %}
+<header>
+    <div class="d-flex align-items-center justify-content-between position-relative">
+        <a class="text-decoration-none text-black" href="{% url 'home' %}">
+            <img width="140" src="{% static 'assets/Logo.svg' %}" alt="Logo" title="Traverve - Logo">
+        </a>
+
+        <img class="cursor-pointer d-block d-lg-none" onclick="searchforcity()" src="{% static 'assets/search-icon.svg' %}" alt="search icon">
+
+        <!-- <div> -->
+
+            <div id="searchbox" class="position-absolute cursor-pointer  p-3 bg-white d-none" >
+
+                <div style="pointer-events: auto;z-index: var(--overlays);right:0;top:0;position:fixed">
+
+                </div>
+
+                <div class="mb-2 d-flex align-items-center" style="color:#707070;">
+                    <img onclick="closebox()" class="mr-3 d-block d-lg-none" src="{% static 'assets/previous.png' %}" alt="plus icon" width="15">
+                    <img class="mr-3 d-none d-lg-block" src="{% static 'assets/search-icon.svg' %}" alt="plus icon" width="15">
+                    <input class="fs_14" style="border: none;width:80%;outline:none;" oninput="searchdestinations()" type="text" name="searchfield" id="searchfield" placeholder="Search something by country or city...">
+                </div>
+                <hr style="border:1px solid black;">
+                <div class="px-3 d-flex flex-column" id="searchlist" style="max-height: 300px; overflow:auto;gap:10px;">
+                </div>
+            </div>
+
+        <!-- </div> -->
+        <nav class="nav-header d-none d-lg-flex">
+            <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/explore">
+                Explore
+            </a>
+            <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/coming-soon">
+                Trip Help
+            </a>
+
+            <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/trips">
+                Trip Builder
+            </a>
+            <img class="cursor-pointer" onclick="searchforcity()" src="{% static 'assets/search-icon.svg' %}" alt="search icon">
+            <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/trips">
+                <div class="normal-button p-2">
+                    <img src="{% static 'assets/plus-icon.svg' %}" alt="plus icon" width="15">
+                    CREATE A TRIP
+                </div>
+            </a>
+
+
+
+        </nav>
+
+    </div>
+</header>

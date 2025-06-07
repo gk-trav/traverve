@@ -1,0 +1,1047 @@
+{% load static %}
+{% load custom_filters %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>{{from_city}} to {{to_city}} - Flights, Itineraries, and More</title>
+    <meta name="description"
+        content="Plan your trip from {{from_city}} to {{to_city}} with our comprehensive travel guide, featuring flight information, itineraries, and local tips.">
+    <meta property="og:title" content="{{from_city}} to {{to_city}} - Flights, Itineraries, and More">
+    <meta property="og:description"
+        content="Plan your trip from {{from_city}} to {{to_city}} with our comprehensive travel guide, featuring flight information, itineraries, and local tips.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:url" content="/">
+    <link rel="canonical" href="/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/avicon-16x16.png' %}">
+
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="classification" content="Traverve - Trip Planner" />
+    <meta property="og:site_name" content="Traverve" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'assets/og_travel_img.jpeg' %}" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Passion+One:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://vjs.zencdn.net/8.12.0/video-js.css" rel="stylesheet" />
+
+    <link href="{% static 'assets/travel-styles.css' %}" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+    <style>
+        body {
+            font-family: "Figtree", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        body {
+            background: #FFF9F4;
+        }
+
+        .float-right {
+            float: right
+        }
+
+        .nav-header {
+            /* font-size: 18px; */
+            font-style: normal;
+            /* font-weight: 600; */
+            gap: 40px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+
+        .normal-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            font-family: "Passion One";
+        }
+
+        /* .banner {
+            background: url("<?= base_url() ?>/assets/banner-bg.png") repeat;
+            /* height: 600px; *
+
+        } */
+
+        .bg-button {
+            border-radius: 40px;
+            font-family: "Passion One";
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            background: var(--Primary-5, #E5855D);
+        }
+
+        .passion {
+            font-family: "Passion One";
+        }
+
+        .title-heading {
+            color: var(--Gray-24, #0A0A0A);
+            /* text-align: center; */
+            font-family: "Passion One";
+            font-size: 60px;
+            font-style: normal;
+            font-weight: 700;
+            /* line-height: 100px; */
+        }
+
+        .banner-overlay {
+            /* background: url("<?= base_url() ?>/assets/banner-left.png") left no-repeat, url("<?= base_url() ?>/assets/banner-right.png") right no-repeat; */
+            width: 100%;
+            height: 100%;
+            display: flex;
+            /* flex-direction: column; */
+            align-items: center;
+            /* justify-content: center; */
+        }
+
+        .fs_24 {
+            font-size: 24px;
+        }
+
+        .fw_600 {
+            font-weight: 600;
+        }
+
+        .bg_white {
+            background-color: white;
+        }
+
+        .section {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000;
+
+        }
+
+        .secondary-header {
+            font-size: 44px;
+            font-style: normal;
+            font-weight: 600;
+            /* line-height: 28px; */
+
+        }
+
+        .br_10 {
+            border-radius: 10px;
+        }
+
+        .fs_14 {
+            font-size: 14px;
+        }
+
+        .fs_18 {
+            font-size: 18px;
+        }
+
+        .w_19 {
+            width: 19%;
+        }
+
+        .w_49 {
+            width: 49%;
+        }
+
+        #searchbox {
+            width: 60%;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            border-radius: 16px;
+            z-index: 1111
+        }
+
+        .city-button {
+            bottom: 15px;
+            z-index: 111;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            border-radius: 15px;
+            background: black;
+            opacity: 0.7;
+        }
+
+
+        #items-list {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            row-gap: 10px;
+        }
+
+        .grid-reels {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            row-gap: 10px;
+        }
+
+        .tag-us {
+
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            row-gap: 10px;
+        }
+
+
+
+
+
+
+        @media only screen and (max-width: 768px) and (min-width:380px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            header .position-relative {
+                position: unset !important;
+            }
+
+            /* .banner {
+                /* height: 70vh; *
+            } */
+
+            .bg-button {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            /* .banner-overlay {
+                background-size: 50%;
+                background: none;
+                display: flex;
+            } */
+
+            #searchbox {
+                width: 100%;
+                border-radius: unset !important;
+                height: 100%;
+                overflow: hidden;
+                position: fixed !important;
+            }
+
+            #searchlist {
+                max-height: 70% !important;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us img {
+                width: 100%;
+            }
+
+            .w_xs_100 {
+                width: 100% !important;
+                margin-bottom: 2rem;
+            }
+
+            .mr-lg-3 {
+                margin-right: 0rem !important;
+            }
+        }
+
+        @media only screen and (max-width: 376px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            .banner {
+                height: 300px
+            }
+
+            /* .banner-overlay {
+                background: url("http://localhost/travel//assets/banner-left.png") left no-repeat, url("http://localhost/travel//assets/banner-right.png") right no-repeat;
+                background-size: 50%;
+                display: block;
+            } */
+
+            #searchbox {
+                width: unset;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .w_xs_100 {
+                width: 100% !important;
+            }
+
+            .mt-sm-2 {
+                margin-top: 1rem
+            }
+
+            .mr-lg-3 {
+                margin-right: 0rem !important;
+            }
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.9 !important;
+        }
+
+
+        .mr-lg-3 {
+            margin-right: 1rem;
+        }
+
+        .primary-background {
+            background-color: #E5855D !important;
+        }
+
+        .rounded-full {
+            border-radius: 9999px;
+        }
+
+        .tooltip2 {
+            color: black;
+            background: transparent;
+            border: none;
+            padding: 0;
+            text-decoration: underline;
+        }
+
+        .tooltip2:hover {
+            color: black !important;
+            background-color: transparent !important;
+        }
+
+        .nav-item {
+            background-color: white;
+        }
+
+        .nav-item .active {
+            background-color: #E5855D !important;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="backdrop" onclick="closebox()" class="d-none"
+        style="position: absolute;width:100%;height:100%;z-index:1;background: rgba(0,0,0,.4);">
+
+    </div>
+    <div class="container py-3 mb-2">
+        {% include "trav_web/header.html" %}
+    </div>
+
+
+    <div class="container-fluid p-0">
+        <div class="banner">
+            <div class="banner-overlay">
+                <div class="container py-4 d-flex align-items-center flex-lg-row flex-column">
+                    <div class="col-lg-7 col-12">
+                        <h1 class="title-heading mb-0">
+                            {{from_city}} to
+                            {{to_city}} Flights
+                        </h1>
+
+
+
+                        <div class="p-2 mb-4">
+                            <div class="text-white d-flex gap-4  mb-2">
+                                <div class="p-2 bg-black d-flex items-center br_10">
+                                    <span class="mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                        </svg>
+                                    </span>
+                                    <span>
+                                        {{data.json.flight_route.from_city_airport_iata_codes|index:0 }} -
+                                        {{data.json.flight_route.to_city_airport_iata_codes|index:0 }}
+                                    </span>
+                                </div>
+                                <!-- <div class="p-2 bg-black d-flex items-center br_10">
+                                    <span class="mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                    </span>
+                                    <span>Avg. Duration: 6-8 hours</span>
+                                </div> -->
+
+
+
+                                <div class="p-2 bg-black d-flex items-center br_10">
+                                    <span class="mr-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" class="h-5 w-5" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z">
+                                            </path>
+                                        </svg>
+                                    </span>
+                                    <span>
+                                        {{ data.json.flight_route.average_price_range_inr}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5 col-12 text-white"
+                        style="display: grid;grid-row: 1;grid-template-columns: repeat(2, 1fr);column-gap: 10px;row-gap: 10px;">
+                        <div class="p-2 primary-background text-black text-center br_10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" class="h-8 w-8 mb-1" fill="white"
+                                viewBox="0 0 24 24" stroke="black">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z">
+                                </path>
+                            </svg>
+                            <p class="m-0">
+                                {{ data.json.flight_route.top_5_airlines_with_average_price_inr|length }} Airlines
+                            </p>
+                            <p>
+                                Top carriers available
+                            </p>
+                        </div>
+                        <div class="p-2 primary-background text-black text-center br_10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" class="h-8 w-8 mb-1" fill="white"
+                                viewBox="0 0 24 24" stroke="black">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <p class="m-0">
+                                3-7 Days
+                            </p>
+                            <p>
+                                Itinerary options
+                            </p>
+                        </div>
+                        <div class="p-2 primary-background text-black text-center br_10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" class="h-8 w-8 mb-1" fill="white"
+                                viewBox="0 0 24 24" stroke="black">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
+                                </path>
+                            </svg>
+                            <p class="m-0">
+                                20+ Attractions
+                            </p>
+                            <p>
+                                Cultural experiences
+                            </p>
+                        </div>
+                        <div class="p-2 primary-background text-black text-center br_10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" class="h-8 w-8 mb-1" fill="white"
+                                viewBox="0 0 24 24" stroke="black">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <p class="m-0">
+                                5 Transport Options
+                            </p>
+                            <p>
+                                From airport to city
+                            </p>
+                        </div>
+                        <div class="p-2 primary-background text-black text-center br_10">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" class="h-8 w-8 mb-1" fill="white"
+                                viewBox="0 0 24 24" stroke="black">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                            <p class="m-0">
+                                4 Payment Methods
+                            </p>
+                            <p>
+                                Local options available
+                            </p>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class=" py-4">
+
+            <div class="container">
+
+                <div class="text-center">
+                    <h2 class="passion mb-3">
+                        About Your Flight Route
+                    </h2>
+
+                    <p class="text-center">
+                        Discover everything you need to know about flying from {{from_city}} to {{to_city}} and plan
+                        your
+                        journey with confidence.
+                    </p>
+                </div>
+
+                <div class="d-flex gap-4 mt-5">
+                    <div class="">
+                        <h4 class=" mb-3 ">Flight Information</h4>
+
+                        <div class="d-flex align-items-start gap-2">
+                            <div class="primary-background p-2 rounded-full mr-4">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div class="fs_14">
+                                <p class="m-0"> Route</p>
+                                <p class="m-0">
+                                    {{from_city}}
+
+                                    {% with data.json.flight_route.from_city_airport_iata_codes as from_codes %}
+                                    {% if from_codes|length > 1 %}
+                                    <span>
+                                        <button type="button" class="tooltip2 btn btn-secondary"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{ from_codes|join:', ' }}">
+                                            ({{ from_codes|length }} Airports)
+                                        </button>
+                                    </span>
+                                    {% else %}
+                                    ({{ from_codes.0 }})
+                                    {% endif %}
+                                    {% endwith %}
+
+                                    to
+
+                                    {% with data.json.flight_route.to_city_airport_iata_codes as to_codes %}
+                                    {% if to_codes|length > 1 %}
+                                    <span>
+                                        <button type="button" class="btn btn-secondary tooltip2"
+                                            data-bs-toggle="tooltip" data-bs-placement="top"
+                                            title="{{ to_codes|join:', ' }}">
+                                            ({{ to_codes|length }} Airports)
+                                        </button>
+                                    </span>
+                                    {% else %}
+                                    {{ to_codes.0 }}
+                                    {% endif %}
+                                    {% endwith %}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-start gap-2 mt-3">
+                            <div class="primary-background p-2 rounded-full mr-4">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div class="fs_14">
+                                <p class="m-0"> Price Range</p>
+                                <p class="m-0">
+                                    {{ data.json.flight_route.average_price_range_inr }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-2 mt-3">
+                            <div class="primary-background p-2 rounded-full mr-4">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div class="fs_14">
+                                <p class="m-0">Major Airlines</p>
+                                <p class="m-0">
+                                    {{ airlines_str }}
+                                </p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start gap-2 mt-3">
+                            <div class="primary-background p-2 rounded-full mr-4">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div class="fs_14">
+                                <p class="m-0">Local Currency</p>
+                                <p class="m-0">
+                                    {{ data.json.flight_route.local_currency }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="mt-4">
+                    <div class="text-center">
+                        <h2 class="passion mb-3">
+                            Getting Around in {{to_city}}
+                        </h2>
+
+
+                    </div>
+
+                    <div class="d-block d-lg-grid flex-wrap gap-4" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="col-12 card shadow-sm border-0 p-3 mb-3">
+                            <p class="">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Airport Tranfer Options
+                            </p>
+                            <ul class="">
+                                {% for c in data.json.flight_route.transportation_from_airport_to_city_center %}
+                                <li class="m-0">
+                                    {{ c }}
+                                </li>
+
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                        <div class="col-12 card shadow-sm border-0 p-3 mb-3">
+                            <p class="">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Nearby Cities
+                            </p>
+                            <ul class="">
+                                {% for c in data.json.flight_route.nearby_cities %}
+                                <li class="m-0">
+                                    {{ c }}
+                                </li>
+
+                                {% endfor %}
+
+
+                            </ul>
+                        </div>
+                        <div class="col-12 card shadow-sm border-0 p-3 mb-3">
+                            <p class="">
+                                <svg width="1.5rem" height="1.5rem" xmlns="http://www.w3.org/2000/svg"
+                                    class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="black">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 13l4 4L19 7"></path>
+                                </svg>
+                                Airport Tranfer Options
+                            </p>
+                            <ul class="">
+                                {% for c in data.json.flight_route.transportation_from_airport_to_city_center %}
+                                <li class="m-0">
+                                    {{ c }}
+                                </li>
+
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <a class="text-black text-decoration-none" href="{{data.json.flight_route.airport_official_website}}"
+                    target="_blank">
+                    <div class="p-2 primary-background text-center mt-4 br_10">
+                        Visit Official Airport Website
+                    </div>
+                </a>
+
+                <div class="mt-4">
+                    <!-- <div class="text-center">
+                        <h2 class="passion mb-3">
+                            Getting Around in <?= $to_city; ?>
+                        </h2>
+
+
+                    </div> -->
+
+                    <div class="d-block d-lg-grid flex-wrap gap-4" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="col-12 card shadow-sm border-0 p-3 mb-3">
+                            <h3 class="passion text-center">
+
+                                Top Airlines & Prices
+                            </h3>
+                            <table style="line-height: 3;">
+                                <thead class="mb-2">
+                                    <th>
+                                        Airline
+                                    </th>
+                                    <th class="float-right">
+                                        Average Price
+                                    </th>
+                                </thead>
+                                <tbody>
+
+                                    {% for t in data.json.flight_route.top_5_airlines_with_average_price_inr %}
+                                    <tr class="mb-3">
+                                        <td>
+                                            {{ t.airline }}
+                                        </td>
+                                        <td class="float-right">
+                                            {{ t.average_price_inr }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12 card shadow-sm border-0 p-3 mb-3">
+                            <h3 class="passion text-center">
+                                Nearby Airports
+                            </h3>
+
+
+                            <table style="line-height: 3;">
+                                <thead class="mb-2">
+                                    <th>
+                                        Airport
+                                    </th>
+                                    <th class="float-right">
+                                        Code
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    {% for city in nearby_cities %}
+                                    {% if nearby_airport_codes|length > forloop.counter0 %}
+                                    <tr class="mb-3">
+                                        <td>{{ city }}</td>
+                                        <td class="float-right">
+                                            {{ nearby_airport_codes|index:forloop.counter0 }}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <a class="text-black " href="{{data.json.flight_route.airport_official_website}}"
+                                target="_blank">
+                                <div class="p-2  text-center mt-4 br_10">
+                                    Visit Official Airport Website
+                                </div>
+                            </a>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="mt-4">
+                    <h2 class="passion mb-3">
+                        Itineraries
+                    </h2>
+                    <p>
+                        Discover the perfect {{to_city}} trip plan for your schedule, from quick day visits to immersive
+                        week-long
+                        explorations.
+                    </p>
+                    <ul class="nav nav-pills mb-3 justify-content-center gap-4" id="pills-tab" role="tablist">
+                        {% for trip in trip_plans %}
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link {% if forloop.first %}active{% endif %}"
+                                id="pills-{{ trip.duration_days }}-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-{{ trip.duration_days }}" type="button" role="tab"
+                                aria-controls="pills-{{ trip.duration_days }}" aria-selected="true">
+                                {{ trip.duration_days }} days
+                            </button>
+                        </li>
+                        {% endfor %}
+
+
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        {% for trip in trip_plans %}
+                        <div class="tab-pane fade {% if forloop.first %} show active{% endif %} pt-3"
+                            id="pills-{{ trip.duration_days }}" role="tabpanel"
+                            aria-labelledby="pills-{{ trip.duration_days }}-tab">
+
+                            <h2 class="passion">
+                                {{ trip.duration_days }}-Day Itinerary
+                            </h2>
+
+                            {% for d in trip.day_plan %}
+                            <div class="card br_10 shadow-sm p-3 mb-4">
+                                <div>
+                                    <span class="p-2 primary-background br_10">
+                                        Day {{ d.day }}
+                                    </span>
+                                    <p class="mt-3 mb-3">
+                                        {{ d.plan }}
+                                    </p>
+
+                                    <div class="d-flex flex-wrap gap-3">
+                                        {% for l in d.links %}
+                                        <a href="{{ l.url }}" target="_blank" rel="noopener noreferrer"
+                                            class="inline-flex items-center mr-4">
+                                            <span>{{ l.activity }}</span>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="15" class="h-4 w-4 ml-1"
+                                                viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd"
+                                                    d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+                                                    clip-rule="evenodd"></path>
+                                            </svg>
+                                        </a>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+
+
+        </div>
+    </div>
+
+
+    <div class="container-fluid p-0 mt-5" style="background-color: white;">
+
+         {% include "trav_web/footer.html" %}
+
+    </div>
+    <div class="modal fade mwebPositionedBottom " id="searchModal" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel2" style="z-index: 11111111111;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content pop_up_lg" style="background-color: transparent;border: none;">
+                <!-- <div style="padding-left: 1.5rem;z-index: 1;position: absolute;" class="modal-header py-3  flex-column  shadow-lg align-items-start" style="border-bottom: 0;padding-bottom: 0 !important;">
+                    <div class="d-flex align-items-center justify-content-start">
+                        <div style="margin-right: 10px;" onclick="closesearch()" type="button" class="close" data-dismiss="modal" aria-label="Close" style="margin-right: 10px;">
+                            <img width="24" src="<?= base_url() ?>assets/previous.png">
+                        </div>
+                        <p style="color: white;" class="m-0" id="modaltitle"> </p>
+                    </div>
+                </div> -->
+
+                <div class="modal-body py-3"
+                    style="height: 100vh;background-color:transparent;position:relative;width:100%">
+                    <div class="p-4" style="z-index: 1;position: absolute;width:100%;top:0;left:0;right:0">
+                        <!-- <progress style="width: 100%;" id="progress" max="100" value="0">Progress</progress> -->
+                        <div class="d-flex align-items-center justify-content-start py-2">
+
+                            <div style="margin-right: 10px;" onclick="closesearch()" type="button" class="close"
+                                data-dismiss="modal" aria-label="Close" style="margin-right: 10px;">
+                                <img width="24" src="<?= base_url() ?>assets/previous.png">
+                            </div>
+                            <p style="color: white;" class="m-0" id="modaltitle"> </p>
+                        </div>
+                    </div>
+
+                    <video style="object-fit: cover;border-radius:10px;background:white;" src="" height="100%"
+                        width="100%" id="videopop" playsinline="">
+                    </video>
+                    <div id="play-overlay" class="p-4"
+                        style="cursor:pointer;position: absolute;width: 100%;height: 100%;top: 0;/*! top: 0; */left: 0;right: 0;">
+                    </div>
+                    <div id="viewdetails" class="p-3 m-3"
+                        style="overflow:auto;display:none;border-radius:10px;z-index:2;cursor:pointer;position: absolute;background-color:white;height: 50%;bottom: 0;left: 0;right: 0;">
+                        <div id="more_des" style="text-align: justify;"></div>
+                    </div>
+                    <div onclick="moredetails()" class="p-4 text-center"
+                        style="cursor:pointer;font-size:12px;color:white;z-index: 1;position: absolute;width:100%;bottom:0;left:0;right:0">
+                        <p class="m-0">View Details</p>
+                    </div>
+                    <!-- <video id="my-video" class="video-js" controls preload="auto" height="500" width="350" poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+                        <source src="https://s3.ap-south-1.amazonaws.com/whatmore.instagram.import.dump/STRSE24S5IS/C6TaZw3N-f-.mp4" type="video/mp4" />
+                        <p class="vjs-no-js">
+                            To view this video please enable JavaScript, and consider upgrading to a
+                            web browser that
+                            <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                        </p>
+                    </video> -->
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script src="<?= base_url() ?>admin/js/vendor.min.js"></script>
+<script src="<?= base_url() ?>admin/js/app.min.js"></script>
+
+<script>
+    function closesearch() {
+        $("#searchModal").modal("hide");
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+    }
+
+
+    $('#searchModal').on('hide.bs.modal', function (e) {
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+    })
+
+    function searchforcity() {
+        $("#searchbox").removeClass("d-none");
+        $("#backdrop").removeClass("d-none");
+
+        document.body.style.overflow = "hidden";
+
+        $("#searchfield").focus()
+    }
+
+    function closebox() {
+        document.body.style.overflow = "auto";
+        $("#searchlist").html("");
+        $("#searchbox").addClass("d-none");
+        $("#backdrop").addClass("d-none");
+    }
+
+    function transformString(string) {
+        string = string.trim().replace(/ /g, '-');
+        string = string.replace(/[^A-Za-z0-9\-]/g, '');
+        string = string.replace(/\s+-\s*|\s*-\s+/g, '-');
+        return string.replace(/-+/g, '-');
+    }
+
+
+    function searchdestinations(check = null) {
+        var srchkey = $("#searchfield").val();
+        $("#searchlist").html("");
+        var json = {};
+
+
+        if (srchkey.length >= 3) {
+
+            if (check != null) {
+                json = {
+                    "type": "country",
+                    "search_key": srchkey,
+                    "search_id": check
+                }
+            } else {
+                json = {
+                    "type": "destination",
+                    "search_key": srchkey,
+
+                }
+            }
+
+
+            $.ajax({
+                url: "{{ request.scheme }}://{{ request.get_host }}/searchdestinations",
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(json)
+            }).done(function (res) {
+                // var response = JSON.parse(res);
+                $("#searchlist").html("");
+                var list = res.list;
+                list.forEach(element => {
+
+                    var html = "";
+
+                    if (element.type == "city")
+                        html += '<a href="{{ request.scheme }}://{{ request.get_host }}/city/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+                    else
+                        html += '<a href="{{ request.scheme }}://{{ request.get_host }}/country/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+
+                    html += '<div class="d-flex align-items-center">' +
+                        '<img width="50" height="50" class="br_10" src="' + element.image + '">' +
+                        '<div class="mx-2"><p class="mb-1 fs_14 text-black">' + element.destination + '</p>';
+
+                    if (element.type == "city")
+                        html += '<p class="m-0 fs_12" style="color:#707070;">' + element.country + '</p>';
+
+                    html += '</div></div></a>';
+
+                    $("#searchlist").append(html);
+                });
+            });
+        }
+
+    }
+</script>

@@ -1,0 +1,356 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    {% if seo_data %}
+    <title>{{ seo_data.title }}</title>
+    <meta name="description" content="{{ seo_data.seo_description }}">
+    <meta property="og:title" content="{{ seo_data.og_title }}">
+    <meta property="og:description" content="{{ seo_data.og_description }}">
+    {% endif %}
+    <meta property="og:url" content="/">
+    <link rel="canonical" href="/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/avicon-16x16.png' %}">
+
+    <meta name="robots" content="noindex, nofollow" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="classification" content="Traverve - Trip Planner" />
+    <meta property="og:site_name" content="Traverve" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'assets/og_travel_img.jpeg' %}" />
+
+
+    <!-- <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,700;0,800;1,900&amp;display=swap"
+    rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Passion+One:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+
+    <style>
+        body {
+            font-family: "Figtree", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .figtree {
+            font-family: "Figtree", sans-serif !important;
+        }
+
+        .passion {
+            font-family: "Passion One";
+        }
+
+        body {
+            background: #FFF9F4;
+        }
+
+        .nav-header {
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            gap: 40px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* HTML: <div class="loader"></div> */
+        .loader {
+            width: 50px;
+            aspect-ratio: 1;
+            display: grid;
+            border: 4px solid #0000;
+            border-radius: 50%;
+            border-right-color: #25b09b;
+            animation: l15 1s infinite linear;
+            margin: auto;
+        }
+
+        .loader::before,
+        .loader::after {
+            content: "";
+            grid-area: 1/1;
+            margin: 2px;
+            border: inherit;
+            border-radius: 50%;
+            animation: l15 2s infinite;
+        }
+
+        @keyframes l15 {
+            100% {
+                transform: rotate(1turn)
+            }
+        }
+
+        .loader::after {
+            margin: 8px;
+            animation-duration: 3s;
+        }
+
+        .normal-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            font-family: "Passion One";
+        }
+
+        .banner {
+            background: url("<?= base_url() ?>/assets/banner-city.png") repeat;
+            /* background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat;
+            background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat; */
+
+            min-height: 400px;
+
+        }
+
+        .bg-button {
+            border-radius: 40px;
+            font-family: "Passion One";
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            background: var(--Primary-5, #E5855D);
+        }
+
+        .title-heading {
+            color: var(--Gray-24, #0A0A0A);
+            text-align: center;
+            /* font-variant-numeric: lining-nums proportional-nums; */
+            font-family: "Passion One";
+            font-size: 120px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 100px;
+        }
+
+        .fs_60px {
+            font-size: 60px;
+            font-family: "Passion One";
+
+        }
+
+        .banner-overlay {
+            background: url("<?= base_url() ?>/assets/banner-left.png") left no-repeat, url("<?= base_url() ?>/assets/banner-right.png") right no-repeat;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fs_24 {
+            font-size: 24px;
+        }
+
+        .fw_600 {
+            font-weight: 600;
+        }
+
+        .bg_white {
+            background-color: white;
+        }
+
+        .section {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000;
+
+        }
+
+        .section-not-bg {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+
+        }
+
+        .secondary-header {
+            font-size: 44px;
+            font-style: normal;
+            font-weight: 600;
+            /* line-height: 28px; */
+
+        }
+
+        .br_10 {
+            border-radius: 10px;
+        }
+
+        .fs_14 {
+            font-size: 14px;
+        }
+
+        .fs_18 {
+            font-size: 18px;
+        }
+
+        .w_19 {
+            width: 19%;
+        }
+
+        .w_49 {
+            width: 49%;
+        }
+
+        .bg-black {
+            background-color: black;
+        }
+
+        .lineclamp3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .city-button {
+            bottom: 15px;
+            z-index: 111;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            border-radius: 15px;
+            background: black;
+            opacity: 0.7;
+        }
+
+        .bg-shadow {
+            box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+        }
+    </style>
+
+
+
+
+</head>
+
+<body>
+    <div class="container-fluid d-flex align-items-center">
+        <img class=" cursor-pointer" width="24" src="{% static 'assets' %}/previous.png" onclick="goback()">
+        <p class="my-3 mx-3 passion fs_18"> Trips </p>
+    </div>
+    <hr style="border: none !important;height: .5px;background: #222;">
+
+    <div class="container-fluid">
+        <div class="d-flex flex-wrap">
+            {% for tr in user_trips %}
+            <div class="col-lg-3 col-md-6 col-12 p-1" style="height: 300px;">
+                <a style="text-decoration: none;color:black" href="/trip-planner/{{ tr.trip_id }}">
+                    <div class="d-flex fs_18 fw_600 br_10 flex-column align-items-center justify-content-center"
+                        style="height: 100%;background-size:100%;background-color:#E5855D;background-image:url({{ tr.filter_logo }});background-repeat:no-repeat">
+                        <div>
+                            {{ tr.trip_name }}
+                        </div>
+                        {% if tr.from_code != "" %}
+                        <div>
+                            {{ tr.from_code }}
+                            -
+                            {{ tr.to_code }}
+                        </div>
+                        {% endif %}
+
+                    </div>
+                </a>
+
+            </div>
+            {%endfor%}
+
+
+
+        </div>
+        {% if user_trips|length == 0 %}
+        <div class="d-flex flex-column align-items-center justify-content-center" style="height: 300px;">
+            <img src="{% static 'assets' %}/trip-list.png" width="200">
+
+        </div>
+        {% endif %}
+
+        <div class="d-flex justify-content-center mt-5 normal-button" onclick="opentrip()">
+            <div class="p-2 black-btn  show-modal fs_24">+ Create a Trip</div>
+        </div>
+
+    </div>
+    <div class="modal fade mwebPositionedBottom " id="trippop" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel2" style="z-index: 11111111111;">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content pop_up_lg">
+                <div class="modal-body d-flex flex-column justify-content-between py-3 br_10">
+                    <div class="passion p-2 d-flex flex-column justify-content-between text-center">
+
+                        <div class="loader text-center mb-3">
+
+                        </div>
+                        Creating A Trip... You will be redirected to soon....
+                        <!-- <p class="text-center passion">
+                            Create Trip
+                        </p>
+                        <div class="" style="font-size: 14px; font-weight:600;">
+                            <label>Trip Name</label>
+                            <input class="p-1" type="text" id="trip_name" placeholder="Enter Trip Name..." style="border: 2px solid #201422;border-radius: 5px;width: 100%;">
+                            <div class="d-flex justify-content-center mt-5 normal-button" onclick="createtrip()">
+                                <div class="p-2 black-btn show-modal"> Create </div>
+                            </div>
+
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    function goback() {
+        window.history.back()
+    }
+
+    function opentrip() {
+        $("#trippop").modal("show");
+        createtrip();
+    }
+
+    function createtrip() {
+
+        // if ($("#trip_name").val() != "") {
+        var tripdata = {
+            "trip_name": "",
+        }
+        $.ajax({
+            url: "{{ request.scheme }}://{{ request.get_host }}/savetrip",
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: JSON.stringify(tripdata)
+        }).done(function (res) {
+            // var response = JSON.parse(res);
+            // if (res.msg == "success") {
+            window.location = "{{ request.scheme }}://{{ request.get_host }}/trip-planner/" + res.trip
+            // }
+
+        });
+        // }
+
+    }
+</script>

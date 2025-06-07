@@ -1,0 +1,521 @@
+{% load static %}
+{% load custom_filters %}
+
+<!DOCTYPE html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="<?= base_url() ?>assets/travel-styles.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+
+    <title>
+        {{data.tag_name}}
+    </title>
+    <meta name="description" content="{{data.tag_name}}">
+    <meta property="og:title" content="{{data.tag_name}}">
+    <meta property="og:description" content="{{data.tag_name}}">
+
+    <meta property="og:url" content="/">
+    <link rel="canonical" href="/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/avicon-16x16.png' %}">
+
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="classification" content="Traverve - Trip Planner" />
+    <meta property="og:site_name" content="Traverve" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'assets/og_travel_img.jpeg' %}" />
+    <link href="https://fonts.googleapis.com/css2?family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Passion+One:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="{% static 'assets/travel-styles.css' %}" rel="stylesheet" />
+    <!-- <script type="application/ld+json">
+        <?= generatebreadcrumbs($page_name, $data) ?>
+    </script> -->
+    <style>
+        body {
+            font-family: "Figtree", sans-serif !important;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        .figtree {
+            font-family: "Figtree", sans-serif;
+        }
+
+        .passion {
+            font-family: "Passion One";
+        }
+
+        body {
+            background: #FFF9F4;
+        }
+
+        .nav-header {
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            gap: 40px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+
+        .normal-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            font-family: "Passion One";
+        }
+
+        .banner {
+            background: url("<?= base_url() ?>/assets/banner-city.png") repeat;
+            /* background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat;
+            background: url("<?= base_url() ?>/assets/banner-left.png") cover no-repeat; */
+
+            min-height: 400px;
+
+        }
+
+        .bg-button {
+            border-radius: 40px;
+            font-family: "Passion One";
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            background: var(--Primary-5, #E5855D);
+        }
+
+        .title-heading {
+            color: var(--Gray-24, #0A0A0A);
+            text-align: center;
+            /* font-variant-numeric: lining-nums proportional-nums; */
+            font-family: "Passion One";
+            font-size: 120px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 100px;
+        }
+
+        .fs_60px {
+            font-size: 60px;
+            font-family: "Passion One";
+
+        }
+
+        .banner-overlay {
+            background: url("<?= base_url() ?>/assets/banner-left.png") left no-repeat, url("<?= base_url() ?>/assets/banner-right.png") right no-repeat;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fs_24 {
+            font-size: 24px;
+        }
+
+        .fw_600 {
+            font-weight: 600;
+        }
+
+        .bg_white {
+            background-color: white;
+        }
+
+        .section {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000;
+
+        }
+
+        .section-not-bg {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+
+        }
+
+        .secondary-header {
+            font-size: 44px;
+            font-style: normal;
+            font-weight: 600;
+            /* line-height: 28px; */
+
+        }
+
+        .br_10 {
+            border-radius: 10px;
+        }
+
+        .fs_14 {
+            font-size: 14px;
+        }
+
+        .fs_18 {
+            font-size: 18px;
+        }
+
+        .w_19 {
+            width: 19%;
+        }
+
+        .w_49 {
+            width: 49%;
+        }
+
+        .bg-black {
+            background-color: black;
+        }
+
+        .lineclamp3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .city-button {
+            bottom: 15px;
+            z-index: 111;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            border-radius: 15px;
+            background: black;
+            opacity: 0.7;
+        }
+
+        #searchbox {
+            width: 60%;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            border-radius: 25px;
+            z-index: 1111
+        }
+
+        .items-list {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            row-gap: 10px;
+        }
+
+
+        @media only screen and (max-width: 768px) and (min-width:380px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            .banner-overlay {
+                background-size: 50%;
+                background: url("<?= base_url() ?>/assets/banner-left.png") left 0 no-repeat, url("<?= base_url() ?>/assets/banner-right.png") right no-repeat;
+                display: block;
+            }
+
+            #searchbox {
+                width: unset;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            .items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us img {
+                width: 100%;
+            }
+        }
+
+        @media only screen and (max-width: 376px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            .banner-overlay {
+                background: url("http://localhost/travel//assets/banner-left.png") left no-repeat, url("http://localhost/travel//assets/banner-right.png") right no-repeat;
+                background-size: 50%;
+                display: block;
+            }
+
+            #searchbox {
+                width: unset;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            .items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .w_xs_100 {
+                width: 100% !important;
+            }
+
+            .mt-sm-2 {
+                margin-top: 1rem
+            }
+        }
+    </style>
+    <script async defer src="https://widget.getyourguide.com/dist/pa.umd.production.min.js"
+        data-gyg-partner-id="8SQGX33"></script>
+
+</head>
+
+
+<body>
+    <div id="backdrop" onclick="closebox()" class="d-none"
+        style="position: absolute;width:100%;height:100%;z-index:1;background: rgba(0,0,0,.4);">
+
+    </div>
+    <div class="container py-3">
+        {% include "trav_web/header.html" %}
+    </div>
+
+    <div class="">
+
+        <div class="container  py-3">
+
+
+            <div class="card mb-3 p-3 br_15  m-auto">
+                <!-- <hr style="border: none !important;height: 1px;background: #222;"> -->
+
+
+                <h1 class="text-center">
+                    {{ data.tag_name }}
+                </h1>
+
+                <div class="m-0 mb-3">
+
+                    {{ data.description | clean_nl2br }}
+
+
+                </div>
+
+                {% if tags %}
+                <div class="mb-3">
+
+                    <h2 class="">
+                        Related Tags :
+                    </h2>
+
+                    <div class="items-list">
+                        {% for t in tags %}
+                        <div class="">
+                            <div class=" section-not-bg p-3" style="height: 180px;">
+                                <h4 class="fs_18">
+                                    {{t.tag_cat_name}}
+                                </h4>
+                                <p class="lineclamp3">
+                                    {{ t.tag_name}}
+                                </p>
+
+                                <!-- <a href="/<?= (isset($page_name->name)) ? " country/" .
+                                    clean(strtolower($page_name->name)) : "city/" .
+                                    clean(strtolower($page_name->city_ascii)) ?>/category/
+                                    <?= clean(strtolower($t['tag_cat_name'])) ?>/
+                                    <?= clean(strtolower($t['tag_name'])) ?>/
+                                    <?= $t['id'] ?> ">
+                                    Learn More ->
+                                </a> -->
+                            </div>
+
+                        </div>
+                        {% endfor %}
+
+
+                    </div>
+
+                </div>
+                {% endif %}
+
+            </div>
+
+            <div data-gyg-widget="auto" data-gyg-partner-id="8SQGX33"></div>
+        </div>
+    </div>
+
+    <div class="container-fluid p-0 mt-5" style="background-color: white;">
+
+        <footer>
+            {% include "trav_web/footer.html" %}
+        </footer>
+    </div>
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://vjs.zencdn.net/8.12.0/video.min.js"></script>
+<script src="<?= base_url() ?>admin/js/vendor.min.js"></script>
+<script src="<?= base_url() ?>admin/js/app.min.js"></script>
+<script>
+    // window.onscroll = function() {
+    //     myFunction()
+    // };
+
+    // var navbar = document.getElementById("navbar");
+    // var sticky = navbar.offsetTop;
+
+    // function myFunction() {
+    //     if (window.scrollY >= sticky) {
+    //         navbar.classList.add("sticky");
+    //     } else {
+    //         navbar.classList.remove("sticky");
+    //     }
+    // }
+
+
+
+    function closesearch() {
+        $("#searchModal").modal("hide");
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+    }
+
+    function searchforcity() {
+        $("#searchbox").removeClass("d-none");
+        $("#backdrop").removeClass("d-none");
+        document.body.style.overflow = "hidden";
+        $("#searchfield").focus()
+    }
+
+    function closebox() {
+        $("#searchlist").html("");
+        document.body.style.overflow = "auto";
+        $("#searchbox").addClass("d-none");
+        $("#backdrop").addClass("d-none");
+    }
+
+    function transformString(string) {
+        string = string.trim().replace(/ /g, '-');
+        string = string.replace(/[^A-Za-z0-9\-]/g, '');
+        string = string.replace(/\s+-\s*|\s*-\s+/g, '-');
+        return string.replace(/-+/g, '-');
+    }
+
+
+    function searchdestinations(check = null) {
+        var srchkey = $("#searchfield").val();
+        $("#searchlist").html("");
+        var json = {};
+
+
+        if (srchkey.length >= 3) {
+
+            if (check != null) {
+                json = {
+                    "type": "country",
+                    "search_key": srchkey,
+                    "search_id": check
+                }
+            } else {
+                json = {
+                    "type": "destination",
+                    "search_key": srchkey,
+
+                }
+            }
+
+
+            $.ajax({
+                url: "{{ request.scheme }}://{{ request.get_host }}/searchdestinations",
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(json)
+            }).done(function (res) {
+                // var response = JSON.parse(res);
+                $("#searchlist").html("");
+                var list = res.list;
+                list.forEach(element => {
+
+                    var html = "";
+
+                    if (element.type == "city")
+                        html += '<a href="{{ request.scheme }}://{{ request.get_host }}/city/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+                    else
+                        html += '<a href="{{ request.scheme }}://{{ request.get_host }}/country/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+
+                    html += '<div class="d-flex align-items-center">' +
+                        '<img width="50" height="50" class="br_10" src="' + element.image + '">' +
+                        '<div class="mx-2"><p class="mb-1 fs_14 text-black">' + element.destination + '</p>';
+
+                    if (element.type == "city")
+                        html += '<p class="m-0 fs_12" style="color:#707070;">' + element.country + '</p>';
+
+                    html += '</div></div></a>';
+
+                    $("#searchlist").append(html);
+                });
+            });
+        }
+
+    }
+
+
+    function transformString(string) {
+        string = string.trim().replace(/ /g, '-');
+        string = string.replace(/[^A-Za-z0-9\-]/g, '');
+        string = string.replace(/\s+-\s*|\s*-\s+/g, '-');
+        return string.replace(/-+/g, '-');
+    }
+</script>

@@ -1,0 +1,806 @@
+{% load static %}
+{% load custom_filters %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% if seo_data %}
+    <title>{{ seo_data.title }}</title>
+    <meta name="description" content="{{ seo_data.seo_description }}">
+    <meta property="og:title" content="{{ seo_data.og_title }}">
+    <meta property="og:description" content="{{ seo_data.og_description }}">
+    {% endif %}
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta property="og:url" content="/">
+    <link rel="canonical" href="/" />
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets/avicon-16x16.png' %}">
+
+    <meta name="robots" content="index, follow" />
+    <meta http-equiv="content-language" content="en" />
+    <meta name="classification" content="Traverve - Trip Planner" />
+    <meta property="og:site_name" content="Traverve" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="{% static 'assets/og_travel_img.jpeg' %}" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&family=MuseoModerno:ital,wght@0,100..900;1,100..900&family=Passion+One:wght@400;700;900&display=swap"
+        rel="stylesheet">
+
+    <link href="https://vjs.zencdn.net/8.12.0/video-js.css" rel="stylesheet" />
+
+    <link href="{% static 'assets/travel-styles.css' %}" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+
+
+    <!-- <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "<?= base_url() ?>"
+            }]
+        }
+    </script> -->
+
+    <style>
+        body {
+            font-family: "Figtree", sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        body {
+            background: #FFF9F4;
+        }
+
+        .nav-header {
+            /* font-size: 18px; */
+            font-style: normal;
+            /* font-weight: 600; */
+            gap: 40px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+
+        .normal-button {
+            border-radius: 40px;
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            font-family: "Passion One";
+        }
+
+        .banner {
+            background: url("{% static 'assets/banner-bg.png' %}") repeat;
+            height: 600px;
+
+        }
+
+        .bg-button {
+            border-radius: 40px;
+            font-family: "Passion One";
+            border: 1px solid var(--Gray-24, #0A0A0A);
+            background: var(--Primary-5, #E5855D);
+        }
+
+        .title-heading {
+            color: var(--Gray-24, #0A0A0A);
+            text-align: center;
+            font-family: "Passion One";
+            font-size: 90px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 100px;
+        }
+
+        .banner-overlay {
+            background: url("{% static 'assets/banner-left.png' %}") left no-repeat, url("{% static 'assets/banner-right.png' %}") right no-repeat;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fs_24 {
+            font-size: 24px;
+        }
+
+        .fs_30 {
+            font-size: 30px;
+        }
+
+        .fw_600 {
+            font-weight: 600;
+        }
+
+        .bg_white {
+            background-color: white;
+        }
+
+        .section {
+            border-radius: 0px 24px 0px 0px;
+            border: 1px solid #000;
+            background: #FFF;
+            box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25), 4px 4px 0px 0px #000;
+
+        }
+
+        .secondary-header {
+            font-size: 44px;
+            font-style: normal;
+            font-weight: 600;
+            /* line-height: 28px; */
+
+        }
+
+        .br_10 {
+            border-radius: 10px;
+        }
+
+        .fs_14 {
+            font-size: 14px;
+        }
+
+        .fs_18 {
+            font-size: 18px;
+        }
+
+        .w_19 {
+            width: 19%;
+        }
+
+        .w_49 {
+            width: 49%;
+        }
+
+        #searchbox {
+            width: 60%;
+            margin: auto;
+            left: 0;
+            right: 0;
+            top: 0;
+            border-radius: 16px;
+            z-index: 1111
+        }
+
+        .city-button {
+            bottom: 15px;
+            z-index: 111;
+            left: 0;
+            right: 0;
+            width: 50%;
+            margin: auto;
+            border-radius: 15px;
+            background: black;
+            opacity: 0.7;
+        }
+
+
+        #items-list {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(4, 1fr);
+            row-gap: 10px;
+        }
+
+        .grid-reels {
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            row-gap: 10px;
+        }
+
+        .tag-us {
+
+            display: grid !important;
+            column-gap: 10px;
+            grid-template-columns: repeat(5, 1fr);
+            row-gap: 10px;
+        }
+
+
+
+
+
+
+        @media only screen and (max-width: 768px) and (min-width:380px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            header .position-relative {
+                position: unset !important;
+            }
+
+            .banner {
+                height: 70vh;
+            }
+
+            .bg-button {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .banner-overlay {
+                background-size: 50%;
+                background: none;
+                display: flex;
+            }
+
+            #searchbox {
+                width: 100%;
+                border-radius: unset !important;
+                height: 100%;
+                overflow: hidden;
+                position: fixed !important;
+            }
+
+            #searchlist {
+                max-height: 70% !important;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us {
+
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tag-us img {
+                width: 100%;
+            }
+
+            .w_xs_100 {
+                width: 100% !important;
+                margin-bottom: 2rem;
+            }
+
+            .mr-lg-3 {
+                margin-right: 0rem !important;
+            }
+        }
+
+        @media only screen and (max-width: 376px) {
+
+            .title-heading {
+                font-size: 50px;
+            }
+
+            .banner {
+                height: 300px
+            }
+
+            .banner-overlay {
+                background: url("{% static 'assets/banner-left.png' %}") left no-repeat, url("{% static 'assets/banner-right.png' %}") right no-repeat;
+                background-size: 50%;
+                display: block;
+            }
+
+            #searchbox {
+                width: unset;
+            }
+
+            .section h2 {
+                font-size: 30px;
+            }
+
+            .section img {
+                width: 100%;
+                height: 300px;
+            }
+
+            #items-list {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-reels {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .w_xs_100 {
+                width: 100% !important;
+            }
+
+            .mt-sm-2 {
+                margin-top: 1rem
+            }
+
+            .mr-lg-3 {
+                margin-right: 0rem !important;
+            }
+        }
+
+        .modal-backdrop.show {
+            opacity: 0.9 !important;
+        }
+
+
+        .mr-lg-3 {
+            margin-right: 1rem;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="backdrop" onclick="closebox()" class="d-none"
+        style="position: absolute;width:100%;height:100%;z-index:1;background: rgba(0,0,0,.4);">
+
+    </div>
+    <div class="container py-3 mb-2">
+        {% include "trav_web/header.html" %} 
+    </div>
+
+    <div class="container-fluid p-0">
+        <div class="banner">
+            <div class="banner-overlay">
+                <div class="text-center">
+                    <h1 class="title-heading">
+                        Your AI Concierge:<br> Plan Less, Trip More
+                    </h1>
+                    <p class="fs_30 fw_600">Turn your plans to Trips</p>
+
+                    <div class="d-flex flex-lg-row flex-column justify-content-center">
+                        <a class="text-decoration-none text-black mr-lg-3" href="">
+                            <div class="bg-button py-2 px-4">
+                                Create Trip
+                            </div>
+                        </a>
+                        <a class="text-decoration-none text-black" href="">
+                            <div class="normal-button py-2 px-4 bg_white">
+                                Explore
+                            </div>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-4">
+        <div class="section d-flex flex-column flex-lg-row align-items-center justify-content-between p-3">
+            <div class="p-lg-4">
+                <h2 class="secondary-header">
+                    How it Works?
+                </h2>
+                <p class="mt-4">
+                    With Traverve, you're in control.
+                    Use our AI-powered tools to explore destinations, customize pre-created itineraries,
+                    and book flights, hotels, and activities with ease. Stay informed with the latest travel
+                    news and essential updates, access personalized concierge services, and even share your
+                    travel experiences to inspire others. From planning to booking and beyond, we provide a seamless,
+                    all-in-one travel ecosystem designed to make every trip unforgettable. </p>
+            </div>
+            <div>
+                <img class="object-fit-contain" height="400px" src="{% static 'assets/side-people.png' %}">
+            </div>
+        </div>
+
+    </div>
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                Trending Reels
+            </h2>
+
+            <div class="d-none d-lg-block ">
+                <div class="grid-reels mt-4">
+                    {% for b in reels %}
+                    <div class="">
+
+                        <div
+                            style="position: relative; border-bottom-left-radius:10px;  border-bottom-right-radius:10px">
+                            <img class="br_10" src="{% static 'uploads/' %}{{ b.thumbnail_image }}" width="100%" height="100%">
+
+                            <div onclick="showvideo()"
+                                class="overlaay-play d-flex align-items-center justify-content-center"
+                                style="cursor:pointer;position: absolute;width: 100%;height: 100%;top: 0;">
+                                <img src="{% static 'assets/play.png' %}" style="height: 25px;filter: opacity(0.9);">
+                            </div>
+                        </div>
+
+                        <p class="mt-2 fs_14">
+                            {{ b.product_name }}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="d-block d-lg-none  mt-4">
+                <div class="swiper mySwiper2 m-0">
+                    <div class="swiper-wrapper">
+                        {% for b in reels %}
+                        <div class="swiper-slide">
+                            <div
+                                style="position: relative; border-bottom-left-radius:10px;  border-bottom-right-radius:10px">
+                                <img class="br_10" src="{% static 'uploads/' %}{{ b.thumbnail_image }}" width="100%" height="100%">
+
+                                <div onclick="showvideo()"
+                                    class="overlaay-play d-flex align-items-center justify-content-center"
+                                    style="cursor:pointer;position: absolute;width: 100%;height: 100%;top: 0;">
+                                    <img src="{% static 'assets/play.png' %}" style="height: 25px;filter: opacity(0.9);">
+                                </div>
+                            </div>
+
+                            <p class="mt-2 fs_14">
+                                {{ b.product_name }}
+                            </p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- <div class="swiper-pagination"></div> -->
+
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="fs_24">
+                Popular Cities
+            </h2>
+
+            <div class="mt-4" id="items-list">
+                {% for des in home_dests %}
+                <a style="text-decoration: none;" href="city/{{ des.city_name | clean_slug }}/{{ des.city_id }}">
+                    <div class="br_10 position-relative">
+                        <img width="100%" class="br_10 position-relative" style="z-index: -1;" height="" src="{{ des.image }}">
+                        <button class="btn mt-2 fs_14 text-white position-absolute fw_600 city-button">
+                            Explore
+                        </button>
+                    </div>
+                </a>
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="container mt-5">
+        <div class="section d-flex align-items-center flex-column flex-lg-row justify-content-between p-3">
+            <div class="p-lg-4">
+                <h2 class="secondary-header">
+                    Everything you need for your next adventure
+                </h2>
+                <p class="mt-4">
+                    Experience travel planning redefined. Traverve offers everything you need for your next adventure,
+                    ensuring comfort every step of the way. Our AI-powered platform helps you create detailed plans,
+                    highlights key insights drawn from reviews by real travelers, and makes finding essential
+                    ancillaries effortless. Trust technology and fellow travelers to guide your perfect, comfortable
+                    trip.
+                </p>
+            </div>
+            <div>
+                <img class="object-fit-contain" height="400px" src="{% static 'assets/side-image.png' %}">
+            </div>
+        </div>
+
+    </div>
+
+    <div class="container mt-5">
+        <div class="d-flex flex-column flex-lg-row flex-md-row justify-content-between">
+            <div class="w_49 w_xs_100 section p-3 text-lg-center">
+                <div class="p-lg-4">
+                    <h2 class="secondary-header">
+                        Collaboration tools
+                    </h2>
+                    <p class="mt-4">
+                        Get your friends and family in on the trip-planning action! They can toss in their two cents by
+                        adding comments or shake things up with their own edits to the itinerary.
+                    </p>
+                </div>
+                <div>
+                    <img class="object-fit-contain" height="300px" width="100%" src="{% static 'assets/bottom-image1.png' %}">
+                </div>
+            </div>
+
+            <div class="w_49 mt-sm-2 w_xs_100 section p-3 text-lg-center">
+                <div class="p-lg-4">
+                    <h2 class="secondary-header">
+                        Popular itineraries
+                    </h2>
+                    <p class="mt-4">
+                        Visit our Explore page to get ideas and inspiration from other traverve. Add their suggestions
+                        to a new trip plan and customize it to make it your own. </p>
+                </div>
+                <div>
+                    <img class="object-fit-contain" height="300px" width="100%" src="{% static 'assets/bottom-image2.png' %}">
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="container mt-5">
+        <div class="px-lg-5">
+            <h2 class="text-center fs_24">
+                Tag us on your next trip.
+            </h2>
+
+            <div class="d-flex justify-content-center">
+
+                <div class="col-lg-4 col-md-4 col-12 mt-4" width="100%">
+                    <img class="br_10" width="100%" src="{% static 'assets/tra_verve_qr.png' %}">
+                </div>
+
+
+            </div>
+
+            <p class="fs_18 text-center mt-4">
+                #travelwithvibe #traverve #traveltogether #travelyourway #travelvibe
+            </p>
+        </div>
+
+    </div>
+
+    <div class="container-fluid p-0 mt-5" style="background-color: white;">
+
+        {% include "trav_web/footer.html" %} 
+    </div>
+   
+</body>
+
+</html>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://vjs.zencdn.net/8.12.0/video.min.js"></script>
+<script src="<?= base_url() ?>admin/js/vendor.min.js"></script>
+<script src="<?= base_url() ?>admin/js/app.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+<script>
+    var swiperx2 = new Swiper(".mySwiper2", {
+        autoplay: true,
+        slidesPerView: 2,
+        spaceBetween: 20,
+        loop: true
+    });
+
+    function closesearch() {
+        $("#searchModal").modal("hide");
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+    }
+
+
+    $('#searchModal').on('hide.bs.modal', function (e) {
+        $("#modaltitle").html("");
+        $("#videopop").attr("src", "");
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+    })
+
+    function searchforcity() {
+        $("#searchbox").removeClass("d-none");
+        $("#backdrop").removeClass("d-none");
+
+        document.body.style.overflow = "hidden";
+
+        $("#searchfield").focus()
+    }
+
+    function closebox() {
+        document.body.style.overflow = "auto";
+        $("#searchlist").html("");
+        $("#searchbox").addClass("d-none");
+        $("#backdrop").addClass("d-none");
+    }
+
+    function transformString(string) {
+        string = string.trim().replace(/ /g, '-');
+        string = string.replace(/[^A-Za-z0-9\-]/g, '');
+        string = string.replace(/\s+-\s*|\s*-\s+/g, '-');
+        return string.replace(/-+/g, '-');
+    }
+
+
+    function searchdestinations(check = null) {
+        var srchkey = $("#searchfield").val();
+        $("#searchlist").html("");
+        var json = {};
+
+
+        if (srchkey.length >= 3) {
+
+            if (check != null) {
+                json = {
+                    "type": "country",
+                    "search_key": srchkey,
+                    "search_id": check
+                }
+            } else {
+                json = {
+                    "type": "destination",
+                    "search_key": srchkey,
+
+                }
+            }
+
+
+            $.ajax({
+                url: "{{ request.scheme }}://{{ request.get_host }}/api/searchdestinations",
+                type: 'post',
+                dataType: 'json',
+                data: JSON.stringify(json)
+            }).done(function (res) {
+                // var response = JSON.parse(res);
+                $("#searchlist").html("");
+                var list = res.list;
+                list.forEach(element => {
+
+                    var html = "";
+
+                    if (element.type == "city")
+                        html += '<a href="{ request.scheme }}://{{ request.get_host }}/city/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+                    else
+                        html += '<a href="{ request.scheme }}://{{ request.get_host }}/country/' + transformString(element.destination.toLowerCase()) + '/' + element.id + '" class="text-decoration-none">';
+
+                    html += '<div class="d-flex align-items-center">' +
+                        '<img width="50" height="50" class="br_10" src="' + element.image + '">' +
+                        '<div class="mx-2"><p class="mb-1 fs_14 text-black">' + element.destination + '</p>';
+
+                    if (element.type == "city")
+                        html += '<p class="m-0 fs_12" style="color:#707070;">' + element.country + '</p>';
+
+                    html += '</div></div></a>';
+
+                    $("#searchlist").append(html);
+                });
+            });
+        }
+
+    }
+
+
+    $("#play-overlay").on('mouseup', function (e) {
+        document.getElementById('videopop').play();
+
+        touchendX = e.changedTouches[0].screenX
+
+        if (touchendX > touchstartX) {
+            start--;
+            videoplay();
+        } else {
+            start++;
+            videoplay();
+        }
+
+        if (morestatus)
+            $("#viewdetails").hide();
+    });
+
+    $("#play-overlay").on('touchend', function (e) {
+        document.getElementById('videopop').play();
+
+        touchendX = e.changedTouches[0].screenX
+
+        if (touchendX > touchstartX) {
+            start--;
+            videoplay();
+        } else {
+            start++;
+            videoplay();
+        }
+
+        if (morestatus)
+            $("#viewdetails").hide();
+    });
+
+    $("#play-overlay").on('mousedown', function (e) {
+        document.getElementById('videopop').pause();
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+        touchstartX = e.changedTouches[0].screenX
+    });
+
+    $("#play-overlay").on('touchstart', function (e) {
+        document.getElementById('videopop').pause();
+        if (morestatus == true) {
+            morestatus = false
+            $("#viewdetails").hide();
+        }
+        touchstartX = e.changedTouches[0].screenX
+    });
+
+    var showtitle = "";
+    var videoslist = [];
+    var start = 0;
+
+    function showvideo(id, name, url) {
+        $.ajax({
+            url: "<?= base_url() ?>/getvideos",
+            type: 'post',
+            dataType: 'json',
+            data: {
+                searchkey: id
+            }
+        }).done(function (res) {
+            showtitle = res.product_name;
+            videoslist = res.videos;
+            start = 0;
+            $("#modaltitle").html("");
+            $("#modaltitle").html(showtitle);
+            $("#videopop").attr("src", videoslist[start].video_url);
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        });
+        videoplay()
+    }
+
+    var morestatus = false // closed
+
+    function moredetails() {
+        morestatus = true
+        document.getElementById('videopop').pause();
+        $("#viewdetails").show();
+        $("#more_des").html(videoslist[start].description)
+    }
+
+    function videoplay() {
+
+        if (videoslist.length > 1 && (start >= 0 && start < videoslist.length)) {
+            $("#videopop").attr("src", "");
+            $("#videopop").attr("src", videoslist[start].video_url);
+            document.getElementById('videopop').currentTime = 0;
+            document.getElementById('videopop').play()
+        }
+
+        $("#searchModal").modal("show");
+    }
+</script>

@@ -386,7 +386,7 @@
     <div class="container py-3">
         <header>
             <div class="d-flex align-items-center justify-content-between">
-                <a class="text-decoration-none text-black" href="/">
+                <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/">
                     <img width="170" height="40" src="{% static 'assets/' %}Logo.svg" alt="Logo" title="Traverve -
                     Logo">
                 </a>
@@ -395,19 +395,19 @@
                     src="{% static 'assets/' %}search-icon.svg" alt="search icon">
 
                 <nav class="nav-header d-none d-lg-flex">
-                    <a class="text-decoration-none text-black" href="explore">
+                    <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/explore">
                         Explore
                     </a>
-                    <a class="text-decoration-none text-black" href="coming-soon">
+                    <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/coming-soon">
                         Trip Help
                     </a>
 
-                    <a class="text-decoration-none text-black" href="trips">
+                    <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/trips">
                         Trip Builder
                     </a>
                     <img class="cursor-pointer" onclick="searchforcity()" src="{% static 'assets/' %}search-icon.svg"
                         alt="search icon">
-                    <a class="text-decoration-none text-black" href="trips">
+                    <a class="text-decoration-none text-black" href="{{ request.scheme }}://{{ request.get_host }}/trips">
                         <div class="normal-button p-2">
                             <img src="{% static 'assets/' %}plus-icon.svg" alt="plus icon" width="15">
                             CREATE A TRIP
@@ -479,7 +479,7 @@
 
                     </div>
 
-                    <a class="text-decoration-none text-white" href="" trips" style="width: 50%;
+                    <a class="text-decoration-none text-white" href="{{ request.scheme }}://{{ request.get_host }}/trips" style="width: 50%;
                         margin:auto">
                         <div class="p-2 text-center firacode fs_18">
                             Not sure where to go? Try our AI trip builder
@@ -499,7 +499,7 @@
 
             <div class="mt-4 items-list" id="items-list2">
                 {% for des in country_list %}
-                <a style="text-decoration: none;" href="country/{{ des.name | clean_slug }}/{{ des.id }}">
+                <a style="text-decoration: none;" href="{{ request.scheme }}://{{ request.get_host }}/country/{{ des.name | clean_slug }}/{{ des.id }}">
                     <div class="br_10 position-relative">
                         <img width="100%" class="br_10 position-relative" style="z-index: -1;height:250px" height=""
                             src="{{des.image_url}}">
@@ -530,7 +530,7 @@
 
             <div class="mt-4 items-list" id="items-list">
                 {% for des in city_list %}
-                <a style="text-decoration: none;" href="city/{{ des.city_ascii | clean_slug }}/{{ des.id }}">
+                <a style="text-decoration: none;" href="{{ request.scheme }}://{{ request.get_host }}/city/{{ des.city_ascii | clean_slug }}/{{ des.id }}">
                     <div class="br_10 position-relative">
                         <img width="100%" class="br_10 position-relative" style="z-index: -1;height:250px" height=""
                             src="{{des.filter_logo}}">

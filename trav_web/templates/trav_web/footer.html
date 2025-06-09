@@ -24,7 +24,7 @@
                     <br>
                     <br>
                     <br>
-                    <a href="/">
+                    <a href="{{ request.scheme }}://{{ request.get_host }}/">
                         <img width="150" height="35" src="{% static 'assets/Logo.png' %}" alt="Logo"
                             title="Traverve - Logo">
                     </a>
@@ -106,7 +106,7 @@
                 <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="heading1"
                     data-bs-parent="#accordionExample">
                     <div class="accordion-body px-0">
-                        <a href="e{{ request.scheme }}://{{ request.get_host }}/xplore">
+                        <a href="{{ request.scheme }}://{{ request.get_host }}/xplore">
                             Explore Destinations
                         </a>
                     </div>

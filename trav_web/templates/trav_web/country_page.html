@@ -388,8 +388,8 @@
                 style="padding-top: 4rem;padding-bottom:5rem;">
                 <div class="col-lg-6 d-flex flex-column  justify-content-center px-2">
                     <div class="fs_14 m-0">
-                        <a class="text-decoration-none" href="/">Home</a> / <a class="text-decoration-none"
-                            href="explore">Explore</a> /
+                        <a class="text-decoration-none" href="{{ request.scheme }}://{{ request.get_host }}/">Home</a> / <a class="text-decoration-none"
+                            href="{{ request.scheme }}://{{ request.get_host }}/explore">Explore</a> /
                         {{data.name}}
                     </div>
                     <h1 class="fs_60px">
@@ -398,7 +398,7 @@
                     <p class="fs_18 figtree" style="text-align: justify;">
                         {{ data.introduction }}
                     </p>
-                    <a class="text-decoration-none text-white d-none d-lg-block" href="trips">
+                    <a class="text-decoration-none text-white d-none d-lg-block" href="{{ request.scheme }}://{{ request.get_host }}/trips">
                         <div class="border p-2 text-center passion fs_18">
                             Not sure where to go in {{data.name}}? Try our AI trip builder
                         </div>
@@ -408,7 +408,7 @@
                     <img class="br_10" width="100%" src="{{ data.image_url }}" alt="{{ data.name }}">
                 </div>
 
-                <a class="mt-3 text-decoration-none text-white d-block d-lg-none" href="trips">
+                <a class="mt-3 text-decoration-none text-white d-block d-lg-none" href="{{ request.scheme }}://{{ request.get_host }}/trips">
                     <div class="border p-2 text-center passion fs_18">
                         Not sure where to go in {{data.name}}? Try our AI trip builder
                     </div>
@@ -459,7 +459,7 @@
 
             <div class="mt-4" id="items-list">
                 {% for des in home_dests %}
-                <a class="h-100" style="text-decoration: none;" href="city/{{des.city_ascii | clean_slug}}/{{des.id}}">
+                <a class="h-100" style="text-decoration: none;" href="{{ request.scheme }}://{{ request.get_host }}/city/{{des.city_ascii | clean_slug}}/{{des.id}}">
                     <div class="br_10 position-relative h-100">
                         <img width="100%" class="br_10 position-relative h-100" style="z-index: -1;" height=""
                             src="{{ des.filter_logo }}">
@@ -498,7 +498,7 @@
                         </p>
 
                         <a
-                            href="country/{{data.name | clean_slug}}/category/{{t.tag_cat_name | clean_slug}}/{{t.tag_name | clean_slug}}/{{t.id}}">
+                            href="{{ request.scheme }}://{{ request.get_host }}/country/{{data.name | clean_slug}}/category/{{t.tag_cat_name | clean_slug}}/{{t.tag_name | clean_slug}}/{{t.id}}">
                             Learn More ->
                         </a>
                     </div>

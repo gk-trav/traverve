@@ -172,7 +172,7 @@
 
 
             $.ajax({
-                url: "<?= base_url() ?>/getsearchbykey",
+                url: "{{ request.scheme }}://{{ request.get_host }}/getsearchbykey",
                 type: 'post',
                 dataType: 'json',
                 data: JSON.stringify(json)
@@ -180,7 +180,7 @@
                 // var response = JSON.parse(res);
                 var list = res.list;
                 list.forEach(element => {
-                    var html = '<a href="<?= base_url() ?>city/' + transformString(element.city.toLowerCase()) + '/' + element.id + '" class="searchlink">' +
+                    var html = '<a href="{{ request.scheme }}://{{ request.get_host }}/city/' + transformString(element.city.toLowerCase()) + '/' + element.id + '" class="searchlink">' +
                         '<div class="my-3 d-flex align-items-center justify-content-between">' +
                         '<img width="15" height="20" src="<?= base_url() ?>assets/location_searchicon.png">' + '<div class="mx-2" style="width:90%"><p class="m-0">' + element.city + ', ' + element.country + '</p></div></div></a>';
 

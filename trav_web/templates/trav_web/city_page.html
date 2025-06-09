@@ -377,8 +377,8 @@
                     <div class="fs_14 m-0">
 
                         <a class="text-decoration-none" href="/">Home</a> / <a class="text-decoration-none"
-                            href="explore">Explore</a> / <a class="text-decoration-none"
-                            href="country/{{data.country | clean_slug}}/{{data.country_id}}"> {{data.country}}</a> /
+                            href="{{ request.scheme }}://{{ request.get_host }}/explore">Explore</a> / <a class="text-decoration-none"
+                            href="{{ request.scheme }}://{{ request.get_host }}/country/{{data.country | clean_slug}}/{{data.country_id}}"> {{data.country}}</a> /
                         {{data.city_ascii}}
                     </div>
                     <h1 class="fs_60px">
@@ -442,7 +442,7 @@
 
             <div class="mt-4" id="items-list">
                 {% for des in home_dests %}
-                <a class="h-100" style="text-decoration: none;" href="city/{{des.city_ascii | clean_slug}}/{{des.id}}">
+                <a class="h-100" style="text-decoration: none;" href="{{ request.scheme }}://{{ request.get_host }}/city/{{des.city_ascii | clean_slug}}/{{des.id}}">
                     <div class="br_10 position-relative h-100">
                         <img width="100%" class="br_10 position-relative h-100" style="z-index: -1;" height=""
                             src="{{ des.filter_logo }}">
@@ -477,7 +477,7 @@
                         </p>
 
                         <a
-                            href="city/{{data.city_ascii | clean_slug}}/category/{{t.tag_cat_name | clean_slug}}/{{t.tag_name | clean_slug}}/{{t.id}}">
+                            href="{{ request.scheme }}://{{ request.get_host }}/city/{{data.city_ascii | clean_slug}}/category/{{t.tag_cat_name | clean_slug}}/{{t.tag_name | clean_slug}}/{{t.id}}">
                             Learn More ->
                         </a>
                     </div>

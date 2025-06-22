@@ -8,7 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 
 client = MongoClient(
-    'mongodb://traverveAdmin:Omni%405001@35.225.50.132:27017/')
+    'mongodb://34.136.177.220:27017/')
 db = client['traverve_db']
 
 
@@ -336,24 +336,24 @@ def search_destinations(request):
                               "id": 1, "city_ascii": 1, "country": 1, "filter_logo": 1}).limit(10)
         for li in data:
             list_result.append({
-                "destination": li.city_ascii,
-                "country": li.country,
+                "destination": li.get('city_ascii'),
+                "country": li.get('country'),
                 "code": "",
-                "id": li.id,
+                "id": li.get('id'),
                 "type": "city",
-                "image": li.filter_logo
+                "image": li.get('filter_logo')
             })
     elif search_type == 'from':
-        data = db.cities.find({"city_ascii": search_regex}, {
-                              "id": 1, "city_ascii": 1, "country": 1, "filter_logo": 1}).limit(10)
+        data = list(db.cities.find({"city_ascii": search_regex}, {
+                              "id": 1, "city_ascii": 1, "country": 1, "filter_logo": 1}).limit(10)) 
         for li in data:
             list_result.append({
-                "destination": li.city_ascii,
-                "country": li.country,
+                "destination": li.get('city_ascii'),
+                "country": li.get('country'),
                 "code": "",
-                "id": li.id,
+                "id": li.get('id'),
                 "type": "city",
-                "image": li.filter_logo
+                "image": li.get('filter_logo')
             })
     elif data["type"] == "country":
         country_id = data.get("country_id")
@@ -634,47 +634,20 @@ def is_id_present(trip_id):
     return db.trip_list.find_one({"trip_id": trip_id}) is not None
 
 
-def trip_planner(request, trip_id):
-    country_list = list(db.category.aggregate([
-        {
-            "$addFields": {
-                "empty_image": {"$eq": ["$image_url", ""]}
-            }
-        },
-        {
-            "$sort": {
-                "empty_image": 1,
-                "image_url": 1
-            }
-        },
-        {"$limit": 4},
-        {
-            "$project": {
-                "name": 1,
-                "id": 1,
-                "image_url": 1,
-                "_id": 0
-            }
-        }
-    ]))
+def trip_planner(request, trip_id):    
+    country_list = db.countries.find(
+        {}, {"name": 1, "id": 1, "image_url": 1}).sort("image_url", 1).limit(4)
 
-    city_list = list(db.cities_list.aggregate([
-        {
-            "$lookup": {
-                "from": "city_tags",
-                "localField": "id",
-                "foreignField": "city_id",
-                "as": "tags"
-            }
-        },
-        {
-            "$match": {
-                "tags.0": {"$exists": True}
-            }
-        },
+    city_list = list(db.cities.aggregate([
         {
             "$addFields": {
-                "empty_image": {"$eq": ["$filter_logo", ""]}
+                "empty_image": {
+                    "$or": [
+                        {"$eq": ["$filter_logo", None]},
+                        {"$eq": ["$filter_logo", ""]},
+                        {"$not": ["$filter_logo"]}
+                    ]
+                }
             }
         },
         {
@@ -683,17 +656,16 @@ def trip_planner(request, trip_id):
                 "filter_logo": 1
             }
         },
+        {"$limit": 8},
         {
             "$project": {
-                "id": 1,
                 "city_ascii": 1,
+                "id": 1,
                 "filter_logo": 1,
                 "_id": 0
             }
-        },
-        {"$limit": 4}
+        }
     ]))
-
     tripdata = {}
     if trip_id:
         trip = db.trip_list.find_one(
@@ -702,11 +674,29 @@ def trip_planner(request, trip_id):
             tripdata = {
                 "trip_id": trip["trip_id"],
                 "trip_name": trip["trip_name"],
-                "data": trip["json"] if trip.get("json") else "[]"
+                "data": (trip["json"]) if trip.get("json") else "[]"
             }
+            
             
     return render(request, 'trav_web/trip_planner.html', {
         "country_list": country_list,
         "city_list": city_list,
         "trip": tripdata
     })
+
+@csrf_exempt
+def gettododata(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            todata = data.get('to', '').lower()
+
+            todo_items = db.todo_list.find({'z_city_name': todata}).limit(20)
+            
+            result = [{"id": item.get('id'), "name": item.get('name')} for item in todo_items]
+
+            return JsonResponse({"list": result}, safe=False)
+
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request method"}, status=400)

@@ -642,7 +642,7 @@
 
 
             $.ajax({
-                url: "{{ request.scheme }}://{{ request.get_host }}/searchdestinations",
+                url: "{{ request.scheme }}://{{ request.get_host }}/api/searchdestinations",
                 type: 'post',
                 dataType: 'json',
                 data: JSON.stringify(json)

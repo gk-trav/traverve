@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/searchdestinations', views.search_destinations, name='search_destinations'),
     path('api/getcitiesbypage', views.getcitiesbypage, name='getcitiesbypage'),
     path('api/getcountriesbypage', views.getcountriesbypage, name='getcountriesbypage'),
+    path('api/gettododata',views.gettododata,name='gettododata'),
     path('trips', views.trips_list, name='trips_list'),
     path('savetrip',views.savetrip, name='savetrip'),
     path('trip-planner/<slug:trip_id>',views.trip_planner, name='trip_planner')

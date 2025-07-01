@@ -1,3 +1,5 @@
+from datetime import date
+import io
 import json
 import random
 import re
@@ -5,7 +7,10 @@ import string
 from django.shortcuts import render
 from pymongo import MongoClient
 from django.views.decorators.csrf import csrf_exempt
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
+from django.utils.xmlutils import SimplerXMLGenerator
+from django.core.paginator import Paginator
+from slugify import slugify
 
 client = MongoClient(
     'mongodb://34.136.177.220:27017/')
@@ -345,10 +350,10 @@ def search_destinations(request):
             })
     elif search_type == 'from':
         data = list(db.cities.find({"city_ascii": search_regex}, {
-                              "id": 1, "city_ascii": 1, "country": 1, "filter_logo": 1}).limit(10)) 
+            "id": 1, "city_ascii": 1, "country": 1, "filter_logo": 1}).limit(10))
         for li in data:
             list_result.append({
-                "destination": li.get('city_ascii'),
+                "destination": li.get('city_ascii', ''),
                 "country": li.get('country'),
                 "code": "",
                 "id": li.get('id'),
@@ -634,7 +639,7 @@ def is_id_present(trip_id):
     return db.trip_list.find_one({"trip_id": trip_id}) is not None
 
 
-def trip_planner(request, trip_id):    
+def trip_planner(request, trip_id):
     country_list = db.countries.find(
         {}, {"name": 1, "id": 1, "image_url": 1}).sort("image_url", 1).limit(4)
 
@@ -676,13 +681,13 @@ def trip_planner(request, trip_id):
                 "trip_name": trip["trip_name"],
                 "data": (trip["json"]) if trip.get("json") else "[]"
             }
-            
-            
+
     return render(request, 'trav_web/trip_planner.html', {
         "country_list": country_list,
         "city_list": city_list,
         "trip": tripdata
     })
+
 
 @csrf_exempt
 def gettododata(request):
@@ -692,11 +697,223 @@ def gettododata(request):
             todata = data.get('to', '').lower()
 
             todo_items = db.todo_list.find({'z_city_name': todata}).limit(20)
-            
-            result = [{"id": item.get('id'), "name": item.get('name')} for item in todo_items]
+
+            result = [{"id": item.get('id'), "name": item.get('name')}
+                      for item in todo_items]
 
             return JsonResponse({"list": result}, safe=False)
 
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=500)
     return JsonResponse({"error": "Invalid request method"}, status=400)
+
+
+def sitemap_index(request):
+    output = io.StringIO()
+    xml = SimplerXMLGenerator(output, 'utf-8')
+    xml.startDocument()
+    xml.startElement("sitemapindex", {
+                     "xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+
+    count = db.countries.count_documents({})
+    pages = (count // 5000) + (1 if count % 5000 else 0)
+    xml = prepareSitemapList(pages, 'countries', xml)
+
+    count = db.cities.count_documents({})
+    pages = (count // 5000) + (1 if count % 5000 else 0)
+    xml = prepareSitemapList(pages, 'cities', xml)
+
+    count = db.country_tags.count_documents({})
+    pages = (count // 5000) + (1 if count % 5000 else 0)
+    xml = prepareSitemapList(pages, 'country_tags', xml)
+
+    count = db.city_tags.count_documents({})
+    pages = (count // 5000) + (1 if count % 5000 else 0)
+    xml = prepareSitemapList(pages, 'city_tags', xml)
+
+    # count = db.blogs.count_documents({})
+    # pages = (count // 5000) + (1 if count % 5000 else 0)
+    # xml = prepareSitemapList(pages, 'blogs', xml)
+
+    count = db.routes_list_details.count_documents({})
+    pages = (count // 5000) + (1 if count % 5000 else 0)
+    xml = prepareSitemapList(pages, 'routes_list_details', xml)
+
+    xml.endElement("sitemapindex")
+    xml.endDocument()
+
+    return HttpResponse(output.getvalue(), content_type="application/xml")
+
+
+def prepareSitemapList(pages, type, xml):
+
+    for i in range(1, pages + 1):
+        xml.startElement("sitemap", {})
+        xml.startElement("loc", {})
+        xml.characters(f"https://traverve.com/sitemap-{type}-{i}.xml")
+        xml.endElement("loc")
+        xml.startElement("lastmod", {})
+        xml.characters(date.today().strftime('%Y-%m-%d'))
+        xml.endElement("lastmod")
+        xml.endElement("sitemap")
+
+    return xml
+
+
+def sitemap_cities(request, page=1):
+
+    cities_cursor = db.cities.find(
+        {}, {"city_ascii": 1, "id": 1}).sort("_id", 1)
+    cities = list(cities_cursor)
+
+    paginator = Paginator(cities, 5000)
+
+    if page > paginator.num_pages:
+        return HttpResponse("Page not found", status=404)
+
+    page_items = paginator.page(page).object_list
+
+    output = io.StringIO()
+    xml = SimplerXMLGenerator(output, 'utf-8')
+    xml.startDocument()
+    xml.startElement(
+        "urlset", {"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+
+    for item in page_items:
+        slug = slugify(item.get('city_ascii', ''))
+        url = f"https://traverve.com/city/{slug}/{item.get('id')}"
+        xml = creatingUrl(xml, url)
+
+    xml.endElement("urlset")
+    xml.endDocument()
+
+    return HttpResponse(output.getvalue(), content_type="application/xml")
+
+
+def sitemap_countries(request, page=1):
+    cursor = db.countries.find({}, {"name": 1, "id": 1}).sort("_id", 1)
+    countries = list(cursor)
+
+    paginator = Paginator(countries, 5000)
+
+    if page > paginator.num_pages:
+        return HttpResponse("Page not found", status=404)
+
+    page_items = paginator.page(page).object_list
+
+    output = io.StringIO()
+    xml = SimplerXMLGenerator(output, 'utf-8')
+    xml.startDocument()
+    xml.startElement(
+        "urlset", {"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+
+    for item in page_items:
+        slug = slugify(item.get('name', ''))
+        url = f"https://traverve.com/country/{slug}/{item.get('id')}"
+        xml = creatingUrl(xml, url)
+
+    xml.endElement("urlset")
+    xml.endDocument()
+
+    return HttpResponse(output.getvalue(), content_type="application/xml")
+
+def sitemap_country_tags(request, page=1):
+    cursor = db.country_tags.find({}, {"country_name": 1,"tag_cat_name": 1, "tag_name": 1, "id": 1}).sort("_id", 1)
+    countries = list(cursor)
+
+    paginator = Paginator(countries, 5000)
+
+    if page > paginator.num_pages:
+        return HttpResponse("Page not found", status=404)
+
+    page_items = paginator.page(page).object_list
+
+    output = io.StringIO()
+    xml = SimplerXMLGenerator(output, 'utf-8')
+    xml.startDocument()
+    xml.startElement(
+        "urlset", {"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+    for item in page_items:
+        slug = slugify(item.get('country_name',''))
+        slug1 = slugify(item.get('tag_cat_name', ''))
+        slug2 = slugify(item.get('tag_name', ''))
+        url = f"https://traverve.com/country/{slug}/category/{slug1}/{slug2}/{item.get('id')}"
+        xml = creatingUrl(xml, url)
+
+    xml.endElement("urlset")
+    xml.endDocument()
+
+    return HttpResponse(output.getvalue(), content_type="application/xml")
+
+def sitemap_city_tags(request, page=1):
+    cursor = db.city_tags.find({"city_name" : {"$exists": True}}, {"city_name": 1,"tag_cat_name": 1, "tag_name": 1, "id": 1}).sort("_id", 1)
+    countries = list(cursor)
+
+    paginator = Paginator(countries, 5000)
+
+    if page > paginator.num_pages:
+        return HttpResponse("Page not found", status=404)
+
+    page_items = paginator.page(page).object_list
+
+    output = io.StringIO()
+    xml = SimplerXMLGenerator(output, 'utf-8')
+    xml.startDocument()
+    xml.startElement(
+        "urlset", {"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+    for item in page_items:
+        slug = slugify(item.get('city_name',''))
+        slug1 = slugify(item.get('tag_cat_name', ''))
+        slug2 = slugify(item.get('tag_name', ''))
+        url = f"https://traverve.com/city/{slug}/category/{slug1}/{slug2}/{item.get('id')}"
+        xml = creatingUrl(xml, url)
+
+    xml.endElement("urlset")
+    xml.endDocument()
+
+    return HttpResponse(output.getvalue(), content_type="application/xml")
+
+def sitemap_routes_list_details(request, page=1):
+    cursor = db.routes_list_details.find({}, {"route": 1})
+    countries = list(cursor)
+
+    paginator = Paginator(countries, 5000)
+
+    if page > paginator.num_pages:
+        return HttpResponse("Page not found", status=404)
+
+    page_items = paginator.page(page).object_list
+
+    output = io.StringIO()
+    xml = SimplerXMLGenerator(output, 'utf-8')
+    xml.startDocument()
+    xml.startElement(
+        "urlset", {"xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9"})
+    for item in page_items:
+        slug = item.get('route')
+        url = f"https://traverve.com/flights/{slug}"
+        xml = creatingUrl(xml, url)
+
+    xml.endElement("urlset")
+    xml.endDocument()
+
+    return HttpResponse(output.getvalue(), content_type="application/xml")
+
+def creatingUrl(xml, url):
+    xml.startElement("url", {})
+    xml.startElement("loc", {})
+    xml.characters(url)
+    xml.endElement("loc")
+    xml.startElement("lastmod", {})
+    xml.characters(date.today().strftime('%Y-%m-%d'))
+    xml.endElement("lastmod")
+    xml.startElement("changefreq", {})
+    xml.characters('daily')
+    xml.endElement("changefreq")
+    xml.startElement("priority", {})
+    xml.characters('0.9')
+    xml.endElement("priority")
+    xml.endElement("url")
+    
+    return xml
+

@@ -12,8 +12,9 @@ from django.utils.xmlutils import SimplerXMLGenerator
 from django.core.paginator import Paginator
 from slugify import slugify
 
-client = MongoClient(
-    'mongodb://34.136.177.220:27017/')
+# client = MongoClient(
+#     'mongodb://34.136.177.220:27017/')
+client = MongoClient('mongodb://localhost:27017/')
 db = client['traverve_db']
 
 

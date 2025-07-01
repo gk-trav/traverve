@@ -34,5 +34,12 @@ urlpatterns = [
     path('api/gettododata',views.gettododata,name='gettododata'),
     path('trips', views.trips_list, name='trips_list'),
     path('savetrip',views.savetrip, name='savetrip'),
-    path('trip-planner/<slug:trip_id>',views.trip_planner, name='trip_planner')
+    path('trip-planner/<slug:trip_id>',views.trip_planner, name='trip_planner'),
+    path('sitemap.xml', views.sitemap_index),
+    path('sitemap-countries-<int:page>.xml', views.sitemap_countries),
+    path('sitemap-cities-<int:page>.xml', views.sitemap_cities),
+    path('sitemap-country_tags-<int:page>.xml', views.sitemap_country_tags),
+    path('sitemap-city_tags-<int:page>.xml', views.sitemap_city_tags),
+    # path('sitemap-blogs-<int:page>.xml', views.sitemap_blogs),
+    path('sitemap-routes_list_details-<int:page>.xml', views.sitemap_routes_list_details)
 ]

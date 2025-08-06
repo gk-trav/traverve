@@ -95,7 +95,7 @@ class Command(BaseCommand):
         return file_list
 
     def generate_index_file(self, sitemap_files):
-        filepath = os.path.join(SITEMAP_DIR, "sitemap-index.xml")
+        filepath = os.path.join(SITEMAP_DIR, "sitemap.xml")
         with open(filepath, 'w', encoding='utf-8') as f:
             xml = XMLGenerator(f, 'utf-8')
             xml.startDocument()

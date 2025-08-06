@@ -45,7 +45,7 @@ urlpatterns = [
     # path('sitemap-city_tags-<int:page>.xml', views.sitemap_city_tags),
     # # path('sitemap-blogs-<int:page>.xml', views.sitemap_blogs),
     # path('sitemap-routes_list_details-<int:page>.xml', views.sitemap_routes_list_details)
-    path('sitemap-index.xml', lambda r: serve_sitemap(r, 'sitemap-index.xml')),
+    path('sitemap.xml', lambda r: serve_sitemap(r, 'sitemap.xml')),
     re_path(r'^sitemap-(?P<name>[\w\-]+)-(?P<page>\d+)\.xml$', lambda r, name, page: serve_sitemap(r, f'sitemap-{name}-{page}.xml')),
 
 ]

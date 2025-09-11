@@ -3,8 +3,9 @@ import string
 from pymongo import MongoClient
 
 
-client = MongoClient(
-    'mongodb://traverveAdmin:Omni%405001@35.225.50.132:27017/')
+# client = MongoClient(
+#     'mongodb://34.136.177.220:27017/')
+client = MongoClient('mongodb://localhost:27017/')
 db = client["traverve_db"]
 user_ids = db["user_ids"]
 

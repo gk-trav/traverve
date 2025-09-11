@@ -47,5 +47,5 @@ urlpatterns = [
     # path('sitemap-routes_list_details-<int:page>.xml', views.sitemap_routes_list_details)
     path('sitemap.xml', lambda r: serve_sitemap(r, 'sitemap.xml')),
     re_path(r'^sitemap-(?P<name>[\w\-]+)-(?P<page>\d+)\.xml$', lambda r, name, page: serve_sitemap(r, f'sitemap-{name}-{page}.xml')),
-
+    path('api/search/destinations/<str:searchterm>/', views.get_search, name='get_search'),
 ]

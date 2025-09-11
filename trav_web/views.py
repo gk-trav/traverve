@@ -712,7 +712,6 @@ def gettododata(request):
     return JsonResponse({"error": "Invalid request method"}, status=400)
 
 
-
 def serve_sitemap(request, filename):
     sitemap_dir = os.path.join(settings.BASE_DIR, 'static', 'sitemaps')
     file_path = os.path.join(sitemap_dir, filename)
@@ -721,6 +720,54 @@ def serve_sitemap(request, filename):
         raise Http404("Sitemap not found")
 
     return FileResponse(open(file_path, 'rb'), content_type='application/xml')
+
+
+def get_search(request, searchterm):
+    try:
+        search = searchterm.replace("-", " ")
+
+        cities_cursor = db.cities.find(
+            {"name_lower": {"$regex": f"^{search}", "$options": "i"}},
+            {"_id": 0, "id": 1, "city_ascii": 1, "country": 1, "country_id": 1}
+        ).limit(10)
+
+        countries_cursor = db.countries.find(
+            {"name_lower": {"$regex": f"^{search}", "$options": "i"}},
+            {"_id": 0, "id": 1, "name": 1}
+        ).limit(10)
+
+        countries = []
+        for c in countries_cursor:
+            countries.append({
+                "country": c.get("name"),
+                "id": c.get("id")
+            })
+
+        cities = []
+        for c in cities_cursor:
+            cities.append({
+                "country": c.get("country"),
+                "country_id": c.get("country_id"),
+                "city": c.get("city_ascii"),
+                "id": c.get("id")
+            })
+            
+        return JsonResponse({
+            "countries": countries,
+            "cities": cities
+        })
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)
+
+
+# Helper function: convert cursor results into dicts
+def dictfetchall(cursor):
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
 
 # def sitemap_index(request):
 #     output = io.StringIO()
@@ -928,6 +975,5 @@ def serve_sitemap(request, filename):
 #     xml.characters('0.9')
 #     xml.endElement("priority")
 #     xml.endElement("url")
-    
-#     return xml
 
+#     return xml

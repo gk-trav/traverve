@@ -17,7 +17,7 @@ Including another URLconf
 
 from . import views
 from django.contrib import admin
-from django.urls import path
+from django.views.generic import TemplateView
 
 from django.urls import path, re_path
 from trav_web.views import serve_sitemap
@@ -38,8 +38,9 @@ urlpatterns = [
     path('trips', views.trips_list, name='trips_list'),
     path('savetrip',views.savetrip, name='savetrip'),
     path('trip-planner/<slug:trip_id>',views.trip_planner, name='trip_planner'),
-    # path('sitemap.xml', views.sitemap_index),
-    # path('sitemap-countries-<int:page>.xml', views.sitemap_countries),
+    path('privacy-policy', TemplateView.as_view(template_name="trav_web/privacy_policy.html"), name="privacy_policy"),    # path('sitemap-countries-<int:page>.xml', views.sitemap_countries),
+    path('about-us', TemplateView.as_view(template_name="trav_web/about_us.html"), name="about_us"),    # path('sitemap-countries-<int:page>.xml', views.sitemap_countries),
+    path('terms-and-conditions', TemplateView.as_view(template_name="trav_web/termsandconditions.html"), name="termsandconditions"),    # path('sitemap-countries-<int:page>.xml', views.sitemap_countries),
     # path('sitemap-cities-<int:page>.xml', views.sitemap_cities),
     # path('sitemap-country_tags-<int:page>.xml', views.sitemap_country_tags),
     # path('sitemap-city_tags-<int:page>.xml', views.sitemap_city_tags),

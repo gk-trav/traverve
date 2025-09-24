@@ -2370,7 +2370,7 @@
         }
 
         $.ajax({
-            url: "{{ request.scheme }}://{{ request.get_host }}/trips/deleteimage",
+            url: "{https://app.traverve.com/deleteimage",
             method: "POST",
             contentType: 'application/json',
             data: angular.toJson(json)
@@ -2386,7 +2386,7 @@
             formData.append('id', "{{ trip.trip_id }}");
 
             // Send the image to the server using POST request
-            $http.post('{{ request.scheme }}://{{ request.get_host }}/trips/upload', formData, {
+            $http.post('{https://app.traverve.com/upload', formData, {
                 headers: {
                     'Content-Type': undefined
                 },
